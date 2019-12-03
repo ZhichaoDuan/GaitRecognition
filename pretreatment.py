@@ -4,7 +4,7 @@ import cv2
 import warnings
 import time
 import argparse
-import multiprocessing as mp
+import concurrent.futures
 from terminaltables import AsciiTable
 import numpy as np
 import logging
@@ -55,7 +55,7 @@ def crop_silhouette(im, position, im_file):
     if horizontal_center is None:
         if opt.use_log:
             logging.critical('Impossible situation, input image %s has no center', im_file)
-        raise ValueError('Impossible situation, input im has no center')
+        raise None
     left_border = horizontal_center - int(opt.width / 2)
     right_border = horizontal_center + int(opt.width / 2)
 
@@ -90,6 +90,11 @@ def process(position):
             if opt.use_log:
                 logging.warning('Image %s is None after crop', im_file)
 
+    if frame_count < 5 and opt.use_log:
+        logging.warning('Position %s contains less than 5 valid frames.', position)
+    
+    return position
+
 
 def main():
     start = time.time()
@@ -103,7 +108,6 @@ def main():
     parser.add_argument('--height', default=64, type=int)
     parser.add_argument('--width', default=64, type=int)
     opt = parser.parse_args()
-    opt.worker_num = min(opt.worker_num, mp.cpu_count())
 
     if opt.use_log:
         logging.basicConfig(format='%(asctime)s::%(levelname)s::%(message)s', level=logging.DEBUG, filename=opt.log_dir)
@@ -129,45 +133,36 @@ def main():
     subjects = os.listdir(opt.input_path)
     subjects.sort()
 
-    pool = mp.Pool(opt.worker_num)
     results = list()
 
-    for _subject in subjects:
-        _subject_dir = os.path.join(opt.input_path, _subject)
-        status = os.listdir(_subject_dir)
-        status.sort()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=opt.worker_num) as executor:
+        for _subject in subjects:
+            _subject_dir = os.path.join(opt.input_path, _subject)
+            status = os.listdir(_subject_dir)
+            status.sort()
 
-        for _status in status:
-            _status_dir = os.path.join(_subject_dir, _status)
-            views = os.listdir(_status_dir)
-            views.sort()
-            for _view in views:
-                _view_dir = os.path.join(_status_dir, _view)
-                processed_view_dir = os.path.join(opt.output_path, _subject, _status, _view)
-                os.makedirs(processed_view_dir)
-                if opt.use_log:
-                    logging.info('%s folder is created.', processed_view_dir)
-                results.append(
-                    pool.apply_async(process, args=(os.path.join(_subject, _status, _view)))
-                )
-                # process(os.path.join(_subject, _status, _view))
-                # import sys
-                # sys.exit(0)
+            for _status in status:
+                _status_dir = os.path.join(_subject_dir, _status)
+                views = os.listdir(_status_dir)
+                views.sort()
+                for _view in views:
+                    _view_dir = os.path.join(_status_dir, _view)
+                    processed_view_dir = os.path.join(opt.output_path, _subject, _status, _view)
+                    os.makedirs(processed_view_dir)
+                    if opt.use_log:
+                        logging.info('%s folder is created.', processed_view_dir)
+                    results.append(executor.submit(process, os.path.join(_subject, _status, _view)))
 
-    pool.close()
-    finished = False
-    while not finished:
-        finished = True
-        for res in results:
-            try:
-                res.get(timeout=0.1)
-            except mp.TimeoutError:
-                finished = False
-                continue
-            except Exception as e:
-                raise e 
-    
-    pool.join()
+        for future in concurrent.futures.as_completed(results):
+            if opt.use_log:
+                try:
+                    pos = future.result()
+                    logging.info('Position %s process completed.', pos)
+                except Exception as exc:
+                    logging.error('generated an exception: %s', exc)
+            else:
+                pass
+
     end = time.time()
     if opt.use_log:
         logging.info('Pictures preprocessing finished, took %d mins, %d secs', int(end - start) // 60, int(end - start) % 60)
