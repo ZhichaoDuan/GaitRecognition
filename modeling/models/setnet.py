@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+__all__ = ['SetNet']
+
 class ActivatedCNN(nn.Module):
     def __init__(self, in_channels, out_channels, ks, activation, **kwargs):
         super(ActivatedCNN, self).__init__()

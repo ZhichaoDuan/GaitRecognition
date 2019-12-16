@@ -3,6 +3,8 @@ import torch
 import torch.nn as nn
 import os
 import numpy as np
+import time
+from utils.format_seconds import fmt_secs
 
 def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
     logger = logging.getLogger(cfg.LOGGER.NAME)
@@ -10,16 +12,16 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
     # save the model structure for one time
     f = os.path.join(cfg.OUTPUT_DIR, cfg.EXPERIMENT, cfg.CHECKPOINT_DIR, 'structure.pt')
     if not os.path.exists(f):
-        logger.info('no structure file detected, serialize structure of model and optimizer into %s', f)
+        logger.info('No structure file detected, serialize structure of model and optimizer into %s', f)
         torch.save(
             [model,optimizer], 
             f
         )
     # retrive the weight from serielized file
     if iteration != 0:
-        logger.info('continuing training process from %d', iteration)
-        logger.info('loading weight file now')
-        f = os.path.join(cfg.OUTPUT_DIR,cfg.EXPERIMENT,cfg.CHECKPOINT_DIR,'{}_{}.pt'.format(cfg.TRAIN.MODEL_NAME,iteration))
+        logger.info('Continuing training process from %d', iteration)
+        logger.info('Loading weight file now')
+        f = os.path.join(cfg.OUTPUT_DIR,cfg.EXPERIMENT,cfg.CHECKPOINT_DIR,'{}_{}.pt'.format(cfg.MODEL.NAME,iteration))
         (model_weight, opt_weight) = torch.load(f)
         model.load_state_dict(model_weight)
         optimizer.load_state_dict(opt_weight)
@@ -35,8 +37,9 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
     model.train()
     train_ids = list(set(train_loader.dataset.ids))
     train_ids = sorted(train_ids)
-
+    logger.info('Entering training loop now.')
     for data, views, status, ids in train_loader:
+        _start = time.time()
         iteration += 1
 
         optimizer.zero_grad()
@@ -66,6 +69,8 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
         loss_chosen.backward()
         optimizer.step()
 
+        _end = time.time()
+
         if iteration % cfg.TRAIN.RECORD_STEP == 0:
             # save weight first
             f = os.path.join(
@@ -78,27 +83,30 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
                     )
                 )
             logger.info('saving weight file of iteration %d into %s', iteration, f)
+
             torch.save(
                 [model.state_dict(), optimizer.state_dict()], 
                 f
             )
 
+        if iteration % cfg.TRAIN.DISPLAY_INFO_STEP == 0:
             logger.info('Iteration %d', iteration)
-            logger.info('hard triplet loss value is %.5f', np.mean(hard_loss_record))
-            logger.info('full triplet loss value is %.5f', np.mean(full_loss_record))
-            logger.info('number of positive full loss entries is %.5f', np.mean(full_loss_nm_record))
-            logger.info('mean dist is %.5f', np.mean(mean_dist_record))
-            logger.info('current learning rate is %f', optimizer.param_groups[0]['lr'])
-            logger.info('current triplet loss type is %s', cfg.TRAIN.TRIPLET_LOSS.TYPE)
+            logger.info('Hard triplet loss value is '+cfg.DISPLAY_FLOAT_FORMAT, np.mean(hard_loss_record))
+            logger.info('Full triplet loss value is '+cfg.DISPLAY_FLOAT_FORMAT, np.mean(full_loss_record))
+            logger.info('Number of positive full loss entries is '+cfg.DISPLAY_FLOAT_FORMAT, np.mean(full_loss_nm_record))
+            logger.info('Mean dist is '+cfg.DISPLAY_FLOAT_FORMAT, np.mean(mean_dist_record))
+            logger.info('Current learning rate is '+cfg.DISPLAY_FLOAT_FORMAT, optimizer.param_groups[0]['lr'])
+            logger.info('Current triplet loss type is %s', cfg.TRAIN.TRIPLET_LOSS.TYPE)
 
             hard_loss_record = []
             full_loss_nm_record = []
             full_loss_record = []
             mean_dist_record = []
+
+            period = _end - _start
+            h,m,s = fmt_secs(period, cfg.TRAIN.MAX_ITERS-iteration)
+            logger.info('Estimated time of finish is {} hours {} mins {} secs.'.format(h, m, s))
         
         if iteration == cfg.TRAIN.MAX_ITERS:
             logger.info('Reaching maximum epochs, break training loop now.')
             break
-
-
-        

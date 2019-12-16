@@ -1,6 +1,4 @@
-import importlib
-
+from .models import get_model
 def build_model(cfg):
-    model_holder = importlib.import_module(cfg.MODEL.NAME)
-    model = getattr(model_holder, cfg.MODEL.NAME)
-    return model
+    model = get_model(cfg.MODEL.NAME)
+    return model(cfg)

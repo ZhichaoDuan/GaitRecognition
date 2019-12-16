@@ -2,9 +2,11 @@
 utils/__pycache__
 solver/__pycache__
 modeling/__pycache__
+modeling/models/__pycache__
 losses/__pycache__
 engine/__pycache__
 data/__pycache__
 data/datasets/__pycache__
 data/transforms/__pycache__
 config/__pycache__
+nohup.out

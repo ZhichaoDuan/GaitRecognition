@@ -42,6 +42,11 @@ def main():
 
     logger = setup_logger(cfg)
     logger.info('Logger setup finished')
+
+    if args.config_file is not None:
+        logger.info('Merged settings from file %s', args.config_file)
+    else:
+        logger.info('Using default settings to operate.')
     
     train(cfg)
     

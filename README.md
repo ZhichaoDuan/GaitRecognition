@@ -1,5 +1,7 @@
 # Gait-Recognition-Research
 
+The architecture is mainly inspired by this [repo](https://github.com/L1aoXingyu/Deep-Learning-Project-Template) and I benefit a lot from this way of organizing code.
+
 ## Data 
 For now, my research mainly focus on `CASIA-B` dataset, which is available [here](http://www.cbsr.ia.ac.cn/english/Gait%20Databases.asp)
 
