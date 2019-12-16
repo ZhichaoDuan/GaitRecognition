@@ -1,0 +1,104 @@
+import logging
+import torch
+import torch.nn as nn
+import os
+import numpy as np
+
+def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
+    logger = logging.getLogger(cfg.LOGGER.NAME)
+    logger.info('Training starts.')
+    # save the model structure for one time
+    f = os.path.join(cfg.OUTPUT_DIR, cfg.EXPERIMENT, cfg.CHECKPOINT_DIR, 'structure.pt')
+    if not os.path.exists(f):
+        logger.info('no structure file detected, serialize structure of model and optimizer into %s', f)
+        torch.save(
+            [model,optimizer], 
+            f
+        )
+    # retrive the weight from serielized file
+    if iteration != 0:
+        logger.info('continuing training process from %d', iteration)
+        logger.info('loading weight file now')
+        f = os.path.join(cfg.OUTPUT_DIR,cfg.EXPERIMENT,cfg.CHECKPOINT_DIR,'{}_{}.pt'.format(cfg.TRAIN.MODEL_NAME,iteration))
+        (model_weight, opt_weight) = torch.load(f)
+        model.load_state_dict(model_weight)
+        optimizer.load_state_dict(opt_weight)
+    
+    full_loss_record = []
+    hard_loss_record = []
+    mean_dist_record = []
+    full_loss_nm_record = []
+
+    model = nn.DataParallel(model.float()).cuda()
+    loss = nn.DataParallel(loss.float()).cuda()
+
+    model.train()
+    train_ids = list(set(train_loader.dataset.ids))
+    train_ids = sorted(train_ids)
+
+    for data, views, status, ids in train_loader:
+        iteration += 1
+
+        optimizer.zero_grad()
+
+        data = data.cuda()
+
+        ids_gt = [train_ids.index(i) for i in ids]
+        ids_gt = torch.Tensor(ids_gt)
+
+        feature = model(data)
+        feature = feature.permute(1, 0, 2).contiguous()
+        ids_gt = ids_gt.unsqueeze(0).repeat(feature.size(0), 1).cuda()
+
+        _container = loss(feature, ids_gt)
+        full_loss, hard_loss, mean_dist, full_loss_nm = _container
+        
+        if cfg.TRAIN.TRIPLET_LOSS.TYPE == 'full':
+            loss_chosen = full_loss.mean()
+        elif cfg.TRAIN.TRIPLET_LOSS.TYPE == 'hard':
+            loss_chosen = hard_loss.mean()
+        
+        full_loss_record.append(full_loss.mean().data.cpu().numpy())
+        hard_loss_record.append(hard_loss.mean().data.cpu().numpy())
+        mean_dist_record.append(mean_dist.mean().data.cpu().numpy())
+        full_loss_nm_record.append(full_loss_nm.mean().data.cpu().numpy())
+        
+        loss_chosen.backward()
+        optimizer.step()
+
+        if iteration % cfg.TRAIN.RECORD_STEP == 0:
+            # save weight first
+            f = os.path.join(
+                    cfg.OUTPUT_DIR,
+                    cfg.EXPERIMENT,
+                    cfg.CHECKPOINT_DIR,
+                    '{}_{}.pt'.format(
+                        cfg.MODEL.NAME,
+                        iteration
+                    )
+                )
+            logger.info('saving weight file of iteration %d into %s', iteration, f)
+            torch.save(
+                [model.state_dict(), optimizer.state_dict()], 
+                f
+            )
+
+            logger.info('Iteration %d', iteration)
+            logger.info('hard triplet loss value is %.5f', np.mean(hard_loss_record))
+            logger.info('full triplet loss value is %.5f', np.mean(full_loss_record))
+            logger.info('number of positive full loss entries is %.5f', np.mean(full_loss_nm_record))
+            logger.info('mean dist is %.5f', np.mean(mean_dist_record))
+            logger.info('current learning rate is %f', optimizer.param_groups[0]['lr'])
+            logger.info('current triplet loss type is %s', cfg.TRAIN.TRIPLET_LOSS.TYPE)
+
+            hard_loss_record = []
+            full_loss_nm_record = []
+            full_loss_record = []
+            mean_dist_record = []
+        
+        if iteration == cfg.TRAIN.MAX_ITERS:
+            logger.info('Reaching maximum epochs, break training loop now.')
+            break
+
+
+        

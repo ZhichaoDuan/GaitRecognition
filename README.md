@@ -5,16 +5,16 @@ For now, my research mainly focus on `CASIA-B` dataset, which is available [here
 
 
 ## Test Environment
-This repo works fine on a four NVIDIA 2080Ti machine. All the packages and their versions have been exported to [this file](environment.yaml) using
+This repo works fine on a four NVIDIA 2080Ti machine. All the packages and their versions have been exported to [this file](environment.yml) using
 
 ```
-conda ${ENV_NAME} export > ${ENV_FILE_NAME}.yaml
+conda env export > ${ENV_FILE_NAME}.yaml
 ```
 
 And you can recreate a exact the same environment by 
 
 ```
-conda ${ENV_NAME} create -f ${ENV_FILE_NAME}.yaml
+conda env create -f ${ENV_FILE_NAME}.yaml
 ```
 
 ## Issues

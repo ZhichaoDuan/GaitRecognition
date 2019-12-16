@@ -1,16 +1,18 @@
-name: GaitSet_env
+name: gait_env
 channels:
+  - pytorch
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=main
   - _pytorch_select=0.2=gpu_0
   - blas=1.0=mkl
-  - ca-certificates=2019.10.16=0
-  - certifi=2019.9.11=py36_0
+  - ca-certificates=2019.11.27=0
+  - certifi=2019.11.28=py36_0
   - cffi=1.13.2=py36h2e261b9_0
   - cudatoolkit=10.0.130=0
   - cudnn=7.6.4=cuda10.0_0
   - freetype=2.9.1=h8a8886c_1
+  - ignite=0.2.1=py36_0
   - intel-openmp=2019.4=243
   - jpeg=9b=h024ee3a_2
   - libedit=3.1.20181209=hc058e9b_0
@@ -38,6 +40,7 @@ dependencies:
   - python-dateutil=2.8.1=py_0
   - pytorch=1.2.0=cuda100py36h938c94c_0
   - pytz=2019.3=py_0
+  - pyyaml=5.1.2=py36h7b6447c_0
   - readline=7.0=h7b6447c_5
   - scipy=1.2.1=py36h7c811a0_0
   - setuptools=42.0.1=py36_0
@@ -45,13 +48,18 @@ dependencies:
   - sqlite=3.30.1=h7b6447c_0
   - tk=8.6.8=hbc83047_0
   - torchvision=0.4.0=cuda100py36hecfc37a_0
+  - tqdm=4.40.0=py_0
   - wheel=0.33.6=py36_0
   - xarray=0.14.0=py_0
   - xz=5.2.4=h14c3975_4
+  - yaml=0.1.7=had09818_2
   - zlib=1.2.11=h7b6447c_3
   - zstd=1.3.7=h0b5b093_0
   - pip:
     - opencv-python==4.1.2.30
+    - python-graphviz==0.13.2
     - terminaltables==3.1.0
-prefix: /home/duanzhichao/anaconda3/envs/GaitSet_env
+    - torchviz==0.0.1
+    - yacs==0.1.6
+prefix: /home1/gmf/miniconda3/envs/gait_env
 
