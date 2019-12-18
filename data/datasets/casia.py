@@ -5,12 +5,12 @@ import os
 from PIL import Image
 
 class CASIADataset(torch.utils.data.Dataset):
-    def __init__(self, seqs_dir, ids, status, views, cfg, transform=None):
+    def __init__(self, seqs_dir, ids, status, views, use_cache, transform=None):
         self.seqs_dir = seqs_dir
         self.ids = ids
         self.status = status
         self.views = views
-        self.use_cache = cfg.TRAIN.CACHE
+        self.use_cache = use_cache
         self.data = [None] * len(self.ids)
         self.transform = transform
         self.index_dict = self._init_index_dict()

@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import numpy as np
 
 __all__ = ['SetNet']
 
@@ -19,6 +20,7 @@ class SetNet(nn.Module):
         super(SetNet, self).__init__()
         self.num_features = cfg.MODEL.NUM_FEATURES
         self.activation = cfg.MODEL.ACTIVATION
+        self.batch_frame = None
         kwargs = dict(
             activation = self.activation,
             bias = False
@@ -45,12 +47,24 @@ class SetNet(nn.Module):
                 nn.init.xavier_uniform_(m.weight)
 
     def _max(self, x, n, m):
-        _, c, h, w = x.size()
-        x = x.view(n, m, c, h, w)
-        mx = torch.max(x, 1)
-        return mx[0]
+        if self.batch_frame is None:
+            _, c, h, w = x.size()
+            x = x.view(n, m, c, h, w)
+            return torch.max(x, 1)[0]
+        else:
+            tmp = 
 
-    def forward(self, x):
+            
+
+    def forward(self, x, batch_frame=None):
+        if batch_frame is not None:
+            batch_frame = batch_frame[0].data.cpu().numpy().tolist()
+            batch_frame = batch_frame[:batch_frame.index(0)]
+            frame_sum = np.sum(batch_frame)
+            if frame_sum < x.size(1):
+                x = x[:, :frame_sum, ...]
+            self.batch_frame = [0] + np.cumsum(batch_frame).tolist()
+
         x = x.unsqueeze(2) # added image channel
         n, m, c, h, w = x.size()
 
