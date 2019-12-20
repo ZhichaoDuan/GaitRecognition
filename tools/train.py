@@ -9,7 +9,7 @@ from data import make_data_loader
 from modeling import build_model
 from solver import build_optimizer
 from losses import build_loss
-from engine.trainer import do_train
+from engine.train import do_train
 
 def train(cfg):
     os.environ['CUDA_VISIBLE_DEVICES'] = cfg.CUDA_VISIBLE_DEVICES
@@ -40,7 +40,7 @@ def main():
     os.makedirs(os.path.join(cfg.OUTPUT_DIR, cfg.EXPERIMENT, cfg.CHECKPOINT_DIR), exist_ok=True)
     os.makedirs(os.path.join(cfg.OUTPUT_DIR, cfg.EXPERIMENT, cfg.RECORD), exist_ok=True)
 
-    logger = setup_logger(cfg)
+    logger = setup_logger(cfg, 'train')
     logger.info('Logger setup finished')
 
     if args.config_file is not None:

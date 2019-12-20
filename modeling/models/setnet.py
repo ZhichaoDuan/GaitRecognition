@@ -5,6 +5,15 @@ import numpy as np
 
 __all__ = ['SetNet']
 
+def clip(arr, tar):
+    len_ = len(arr)
+    for i in range(len(arr)):
+        if arr[-(i+1)] != tar:
+            break
+        else:
+            len_ -= 1
+    return arr[:len_]
+
 class ActivatedCNN(nn.Module):
     def __init__(self, in_channels, out_channels, ks, activation, **kwargs):
         super(ActivatedCNN, self).__init__()
@@ -47,24 +56,27 @@ class SetNet(nn.Module):
                 nn.init.xavier_uniform_(m.weight)
 
     def _max(self, x, n, m):
+        _, c, h, w = x.size()
+        x = x.view(n, m, c, h, w)
         if self.batch_frame is None:
-            _, c, h, w = x.size()
-            x = x.view(n, m, c, h, w)
             return torch.max(x, 1)[0]
-        else:
-            tmp = 
+        else: 
+            tmp = [
+                torch.max(x[:, self.batch_frame[i]:self.batch_frame[i+1], ...], 1)[0]
+                for i in range(len(self.batch_frame) - 1)
+            ]
+            return torch.cat(tmp, 0)
 
             
 
     def forward(self, x, batch_frame=None):
         if batch_frame is not None:
             batch_frame = batch_frame[0].data.cpu().numpy().tolist()
-            batch_frame = batch_frame[:batch_frame.index(0)]
+            batch_frame = clip(batch_frame, 0)
             frame_sum = np.sum(batch_frame)
             if frame_sum < x.size(1):
                 x = x[:, :frame_sum, ...]
             self.batch_frame = [0] + np.cumsum(batch_frame).tolist()
-
         x = x.unsqueeze(2) # added image channel
         n, m, c, h, w = x.size()
 

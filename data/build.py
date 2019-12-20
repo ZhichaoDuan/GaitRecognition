@@ -72,8 +72,8 @@ def make_data_loader(cfg, phase):
     cf = CollateFn(cfg, phase).gait_collate_fn
     if phase == 'train':
         loader = torch.utils.data.DataLoader(
-            dataset=GaitSampler(dataset, cfg.TRAIN.BATCH_SIZE),
-            batch_sampler=bs,
+            dataset=dataset,
+            batch_sampler=GaitSampler(dataset, cfg.TRAIN.BATCH_SIZE),
             collate_fn=cf,
             num_workers=cfg.NUM_WORKERS,
         )
