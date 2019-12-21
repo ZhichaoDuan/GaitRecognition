@@ -17,8 +17,6 @@ _C.NUM_WORKERS = 8
 _C.RECORD = 'partition'
 # display settings
 _C.DISPLAY_FLOAT_FORMAT = '%.8f'
-# num rank of acc
-_C.NUM_RANKS = 5
 # input settings
 _C.INPUT = CN()
 _C.INPUT.RESOLUTION = 64
@@ -53,4 +51,8 @@ _C.MODEL.ACTIVATION = 'leaky_relu'
 _C.TEST = CN()
 _C.TEST.BATCH_SIZE = 16
 _C.TEST.CACHE = False
-_C.TEST.TEST_ITER = 80000
+_C.TEST.TEST_ITER = 1000
+# num rank of acc
+_C.TEST.NUM_RANKS = 5
+# num of display rank
+_C.TEST.DISPLAY_NUM_RANKS = 1
