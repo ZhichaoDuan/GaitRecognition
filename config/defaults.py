@@ -2,13 +2,13 @@ from yacs.config import CfgNode as CN
 
 _C = CN()
 # output dir
-_C.OUTPUT_DIR = '/home/gmf/duanzhichao/experiments/gait_recognition'
+_C.OUTPUT_DIR = '/home1/dzc/experiments/gait_recognition'
 # experiment name
-_C.EXPERIMENT = 'baseline_epoch_1000'
+_C.EXPERIMENT = 'base_experiment'
 # checkpoint folder name
 _C.CHECKPOINT_DIR = 'checkpoints'
 # cuda env
-_C.CUDA_VISIBLE_DEVICES = '7'
+_C.CUDA_VISIBLE_DEVICES = "2,3"
 # dataset dir
 _C.DATASET_DIR = '/home/gmf/duanzhichao/datasets/GaitDatasetB-silh-processed'
 # threads to use
@@ -47,6 +47,7 @@ _C.MODEL = CN()
 _C.MODEL.NAME = 'SetNet'
 _C.MODEL.NUM_FEATURES = 256
 _C.MODEL.ACTIVATION = 'leaky_relu'
+_C.MODEL.BNNECK = False
 # test settings
 _C.TEST = CN()
 _C.TEST.BATCH_SIZE = 16

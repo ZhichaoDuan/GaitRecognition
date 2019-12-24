@@ -1,0 +1,6 @@
+EXPERIMENT: 'test'
+CUDA_VISIBLE_DEVICES: "'2,'"
+TRAIN:
+  CACHE: False
+MODEL:
+  BNNECK: True

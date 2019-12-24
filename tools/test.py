@@ -8,7 +8,7 @@ sys.path.append('.')
 from config import cfg
 from utils.logger import setup_logger
 from data import make_data_loader
-from engine.test import do_test
+from engine.inference import do_test
 
 def test(cfg):
     os.environ['CUDA_VISIBLE_DEVICES'] = cfg.CUDA_VISIBLE_DEVICES
@@ -35,6 +35,7 @@ def main():
         cfg.merge_from_file(args.config_file)
 
     cfg.merge_from_list(args.opts)
+    cfg.CUDA_VISIBLE_DEVICES = ','.join(list(map(lambda x: str(x), cfg.CUDA_VISIBLE_DEVICES)))
     cfg.freeze()
 
     os.makedirs(os.path.join(cfg.OUTPUT_DIR,cfg.EXPERIMENT,'tests'), exist_ok=True)

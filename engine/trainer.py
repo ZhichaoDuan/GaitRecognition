@@ -1,6 +1,7 @@
 import logging
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import os
 import numpy as np
 import time
@@ -37,6 +38,7 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
     model.train()
     train_ids = list(set(train_loader.dataset.ids))
     train_ids = sorted(train_ids)
+
     logger.info('Entering training loop now.')
     for data, views, status, ids in train_loader:
         _start = time.time()
@@ -48,8 +50,15 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
 
         ids_gt = [train_ids.index(i) for i in ids]
         ids_gt = torch.Tensor(ids_gt)
-
-        feature = model(data)
+        
+        if cfg.MODEL.BNNECK:
+            feature, neck, _ = model(data)
+            cls_ids_gt = ids_gt.unsqueeze(1).repeat(1, neck.size(1))
+            cls_ids_gt_flatten = cls_ids_gt.reshape(-1).long().cuda()
+            neck = neck.reshape(-1, neck.size(2))
+            cls_loss = F.cross_entropy(neck, cls_ids_gt_flatten)         
+        else:
+            feature = model(data)
         feature = feature.permute(1, 0, 2).contiguous()
         ids_gt = ids_gt.unsqueeze(0).repeat(feature.size(0), 1).cuda()
 
@@ -60,7 +69,10 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
             loss_chosen = full_loss.mean()
         elif cfg.TRAIN.TRIPLET_LOSS.TYPE == 'hard':
             loss_chosen = hard_loss.mean()
-        
+
+        if cfg.MODEL.BNNECK:
+            loss_chosen = loss_chosen + cls_loss / 10.
+
         full_loss_record.append(full_loss.mean().data.cpu().numpy())
         hard_loss_record.append(hard_loss.mean().data.cpu().numpy())
         mean_dist_record.append(mean_dist.mean().data.cpu().numpy())
@@ -97,7 +109,12 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
             logger.info('Mean dist is '+cfg.DISPLAY_FLOAT_FORMAT, np.mean(mean_dist_record))
             logger.info('Current learning rate is '+cfg.DISPLAY_FLOAT_FORMAT, optimizer.param_groups[0]['lr'])
             logger.info('Current triplet loss type is %s', cfg.TRAIN.TRIPLET_LOSS.TYPE)
-
+            if cfg.TRAIN.TRIPLET_LOSS.TYPE == 'full':
+                logger.info('Current full triplet loss value is '+cfg.DISPLAY_FLOAT_FORMAT, full_loss.mean().data.cpu().numpy().tolist())
+            elif cfg.TRAIN.TRIPLET_LOSS.TYPE == 'hard':
+                logger.info('Current hard triplet loss value is '+cfg.DISPLAY_FLOAT_FORMAT, hard_loss.mean().data.cpu().numpy().tolist())
+            if cfg.MODEL.BNNECK:
+                logger.info('Current cross-entropy loss is '+cfg.DISPLAY_FLOAT_FORMAT, cls_loss.data.cpu().numpy().tolist()) 
             hard_loss_record = []
             full_loss_nm_record = []
             full_loss_record = []

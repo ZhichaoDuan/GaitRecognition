@@ -8,13 +8,13 @@ from utils.logger import setup_logger
 from data import make_data_loader
 from modeling import build_model
 from solver import build_optimizer
-from losses import build_loss
-from engine.train import do_train
+from layers import build_loss
+from engine.trainer import do_train
 
 def train(cfg):
     os.environ['CUDA_VISIBLE_DEVICES'] = cfg.CUDA_VISIBLE_DEVICES
     train_loader = make_data_loader(cfg, 'train')
-    model = build_model(cfg)
+    model = build_model(cfg, nm_cls=len(list(set(train_loader.dataset.ids))))
     optimizer = build_optimizer(model, cfg)
     loss = build_loss(cfg)
     do_train(model, optimizer, cfg, train_loader, loss, cfg.TRAIN.RESTORE_FROM_ITER)

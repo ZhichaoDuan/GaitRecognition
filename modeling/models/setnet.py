@@ -25,11 +25,12 @@ class ActivatedCNN(nn.Module):
         return self.activation(x, inplace=True)
 
 class SetNet(nn.Module):
-    def __init__(self, cfg):
+    def __init__(self, cfg, nm_cls):
         super(SetNet, self).__init__()
         self.num_features = cfg.MODEL.NUM_FEATURES
         self.activation = cfg.MODEL.ACTIVATION
         self.batch_frame = None
+        self.use_bnneck = cfg.MODEL.BNNECK
         kwargs = dict(
             activation = self.activation,
             bias = False
@@ -46,9 +47,15 @@ class SetNet(nn.Module):
         self.global_layer3 = ActivatedCNN(64, 128, 3, padding=1, **kwargs)
         self.global_layer4 = ActivatedCNN(128, 128, 3, padding=1, **kwargs)
         
+        if self.use_bnneck:
+            self.bottleneck = nn.BatchNorm1d(self.num_features)
+
         self.bin_num = [1, 2, 4, 8, 16]
-        self.fc_bin = nn.Parameter(
+        self.fc1 = nn.Parameter(
             nn.init.xavier_uniform_(torch.zeros(sum(self.bin_num)*2, 128, self.num_features))
+        )
+        self.fc2 = nn.Parameter(
+            nn.init.xavier_uniform_(torch.zeros(sum(self.bin_num)*2, self.num_features, nm_cls))
         )
 
         for m in self.modules():
@@ -66,8 +73,6 @@ class SetNet(nn.Module):
                 for i in range(len(self.batch_frame) - 1)
             ]
             return torch.cat(tmp, 0)
-
-            
 
     def forward(self, x, batch_frame=None):
         if batch_frame is not None:
@@ -112,6 +117,14 @@ class SetNet(nn.Module):
             feature.append(z)
         
         feature = torch.cat(feature, 2).permute(2, 0, 1)
-        feature = feature.matmul(self.fc_bin)
-        feature = feature.permute(1, 0, 2)
-        return feature
+        feature = feature.matmul(self.fc1)
+        feature = feature.permute(1, 0, 2) # 128 62 256
+        
+        if self.use_bnneck:
+            bs, nm_cnns, ftrs = feature.size()
+            neck = self.bottleneck(feature.contiguous().view(-1, ftrs))
+            neck_for_cls = neck.view(bs, nm_cnns, ftrs)
+            neck = neck_for_cls.permute(1, 0, 2).matmul(self.fc2).permute(1, 0, 2)
+            return feature.contiguous(), neck.contiguous(), neck_for_cls.contiguous()
+        else:
+            return feature.contiguous()

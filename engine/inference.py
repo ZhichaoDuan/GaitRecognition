@@ -1,12 +1,18 @@
 import torch
 import numpy as np
 import logging
-from terminaltables import SingleTable
 
-def compute_dist(ndarr1, ndarr2):
+def compute_euclidean_dist(ndarr1, ndarr2):
     dist = np.expand_dims(np.sum(ndarr1 ** 2, axis=1), 1) + np.expand_dims(np.sum(ndarr2 ** 2, 1), 0) - 2 * np.matmul(ndarr1, np.transpose(ndarr2))
     dist = np.sqrt(np.maximum(0, dist))
     return dist
+
+def compute_cosine_dist(ndarr1, ndarr2):
+    dot = np.matmul(ndarr1, np.transpose(ndarr2))
+    norm_arr1 = np.linalg.norm(ndarr1, axis=1).reshape(-1, 1)
+    norm_arr2 = np.linalg.norm(ndarr2, axis=1).reshape(1, -1)
+    norm_mat = np.matmul(norm_arr1, norm_arr2)
+    return dot / norm_mat
 
 def exclude_identical(acc, flattened_view=True):
     res = np.sum(acc - np.diag(np.diag(acc)), 1) / 10
@@ -31,7 +37,10 @@ def do_test(model, cfg, test_loader):
     for items in test_loader:
         data, view_, status_, id_, batch_frames = items
         batch_frames = torch.tensor(batch_frames).cuda()
-        feature_ = model(data, batch_frames).contiguous()
+        if not cfg.MODEL.BNNECK:
+            feature_ = model(data, batch_frames).contiguous()
+        else:
+            _, _, feature_ = model(data, batch_frames)
         n, num_bins, _ = feature_.size()
         features.append(feature_.view(n, -1).data.cpu().numpy())
         views += view_
@@ -61,7 +70,10 @@ def do_test(model, cfg, test_loader):
                 probe_x = features[p_mask, :]
                 probe_y = ids[p_mask]
 
-                dist = compute_dist(probe_x, gallery_x)
+                if not cfg.MODEL.BNNECK:
+                    dist = compute_euclidean_dist(probe_x, gallery_x)
+                else:
+                    dist = compute_cosine_dist(probe_x, gallery_x)
                 idx = np.argsort(dist, axis=1)
                 
                 acc[ps_idx, v1, v2, :] = np.round(np.sum(np.cumsum(np.expand_dims(probe_y, -1) == gallery_y[idx[:, :cfg.TEST.NUM_RANKS]], 1) > 0, 0) * 100 / dist.shape[0], 2)
