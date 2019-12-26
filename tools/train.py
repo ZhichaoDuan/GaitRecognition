@@ -7,17 +7,30 @@ from config import cfg
 from utils.logger import setup_logger
 from data import make_data_loader
 from modeling import build_model
-from solver import build_optimizer
+from solver import make_optimizer, WarmupMultiStepLR
 from layers import build_loss
 from engine.trainer import do_train
 
 def train(cfg):
-    os.environ['CUDA_VISIBLE_DEVICES'] = cfg.CUDA_VISIBLE_DEVICES
+    os.environ['CUDA_VISIBLE_DEVICES'] = cfg.MODEL.DEVICE_ID
     train_loader = make_data_loader(cfg, 'train')
     model = build_model(cfg, nm_cls=len(list(set(train_loader.dataset.ids))))
-    optimizer = build_optimizer(model, cfg)
+    optimizer = make_optimizer(cfg, model)
+    if cfg.TRAIN.RESTORE_FROM_ITER == 0:
+        scheduler = WarmupMultiStepLR(optimizer, cfg.SOLVER.MILESTONES, warmup_iters=cfg.SOLVER.WARMUP_ITERS, last_epoch=-1)
+    else:
+        scheduler = WarmupMultiStepLR(optimizer, cfg.SOLVER.MILESTONES, warmup_iters=cfg.SOLVER.WARMUP_ITERS, last_epoch=cfg.TRAIN.RESTORE_FROM_ITER)
     loss = build_loss(cfg)
-    do_train(model, optimizer, cfg, train_loader, loss, cfg.TRAIN.RESTORE_FROM_ITER)
+    # do_train(model, optimizer, cfg, train_loader, loss, cfg.TRAIN.RESTORE_FROM_ITER)
+    do_train(
+        cfg=cfg,
+        model=model,
+        train_loader=train_loader,
+        optimizer=optimizer,
+        scheduler=scheduler,
+        loss=loss,
+        iteration=cfg.TRAIN.RESTORE_FROM_ITER,
+    )
 
 def main():
     parser = argparse.ArgumentParser()
@@ -35,18 +48,22 @@ def main():
     cfg.merge_from_list(args.opts)
     cfg.freeze()
 
-    os.makedirs(os.path.join(cfg.OUTPUT_DIR, cfg.EXPERIMENT), exist_ok=True)
-    os.makedirs(os.path.join(cfg.OUTPUT_DIR, cfg.EXPERIMENT, cfg.LOGGER.STORE_DIR), exist_ok=True)
-    os.makedirs(os.path.join(cfg.OUTPUT_DIR, cfg.EXPERIMENT, cfg.CHECKPOINT_DIR), exist_ok=True)
-    os.makedirs(os.path.join(cfg.OUTPUT_DIR, cfg.EXPERIMENT, cfg.RECORD), exist_ok=True)
+    os.makedirs(cfg.PATH.OUTPUT_DIR, exist_ok=True)
+    os.makedirs(os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR), exist_ok=True)
+    os.makedirs(os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR, cfg.PATH.LOG_STORE_DIR), exist_ok=True)
+    os.makedirs(os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR, cfg.PATH.CHECKPOINT_DIR ), exist_ok=True)
+    os.makedirs(os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR, cfg.PATH.SPLIT_RECORD_DIR), exist_ok=True)
 
-    logger = setup_logger(cfg, 'train')
-    logger.info('Logger setup finished')
+    logger = setup_logger(cfg)
+    logger.info('Training logger setup finished')
+
+    logger.info(args)
 
     if args.config_file is not None:
         logger.info('Merged settings from file %s', args.config_file)
-    else:
-        logger.info('Using default settings to operate.')
+        with open(args.config_file,'r') as cf:
+            logger.info('\n'+cf.read())
+    logger.info("Running with config:\n{}".format(cfg))
     
     train(cfg)
     

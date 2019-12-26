@@ -12,10 +12,10 @@ def build_dataset(cfg, phase, transform):
     views = list()
     status = list()
     subject_ids = list()
-    for _subject_id in sorted(os.listdir(cfg.DATASET_DIR)):
+    for _subject_id in sorted(os.listdir(cfg.DATASET.DATASET_DIR)):
         if _subject_id == '005':
             continue
-        _subject_dir = os.path.join(cfg.DATASET_DIR, _subject_id)
+        _subject_dir = os.path.join(cfg.DATASET.DATASET_DIR, _subject_id)
         for _status in sorted(os.listdir(_subject_dir)):
             _status_dir = os.path.join(_subject_dir, _status)
             for _view in sorted(os.listdir(_status_dir)):
@@ -28,23 +28,23 @@ def build_dataset(cfg, phase, transform):
                     views.append(_view)
     
     os.makedirs(os.path.join(
-        cfg.OUTPUT_DIR,
-        cfg.EXPERIMENT,
-        cfg.RECORD,
+        cfg.PATH.OUTPUT_DIR,
+        cfg.PATH.EXPERIMENT_DIR,
+        cfg.PATH.SPLIT_RECORD_DIR,
     ), exist_ok=True)
     
     split_record_dir = os.path.join(
-        cfg.OUTPUT_DIR,
-        cfg.EXPERIMENT,
-        cfg.RECORD,
-        '{}_{}.npy'.format(cfg.INPUT.BOUNDARY, cfg.INPUT.SHUFFLE),
+        cfg.PATH.OUTPUT_DIR,
+        cfg.PATH.EXPERIMENT_DIR,
+        cfg.PATH.SPLIT_RECORD_DIR,
+        '{}_{}.npy'.format(cfg.DATASET.BOUNDARY, cfg.DATASET.SHUFFLE),
     )
 
     if not os.path.exists(split_record_dir):
         ids = sorted(list(set(subject_ids)))
-        if cfg.INPUT.SHUFFLE:
+        if cfg.DATASET.SHUFFLE:
             np.random.shuffle(ids)
-        partition = [ids[:cfg.INPUT.BOUNDARY], ids[cfg.INPUT.BOUNDARY:]]
+        partition = [ids[:cfg.DATASET.BOUNDARY], ids[cfg.DATASET.BOUNDARY:]]
         np.save(split_record_dir, partition)
 
     partition = np.load(split_record_dir)
@@ -75,14 +75,14 @@ def make_data_loader(cfg, phase):
             dataset=dataset,
             batch_sampler=GaitSampler(dataset, cfg.TRAIN.BATCH_SIZE),
             collate_fn=cf,
-            num_workers=cfg.NUM_WORKERS,
+            num_workers=cfg.DATASET.NUM_WORKERS,
         )
     else:
         loader = torch.utils.data.DataLoader(
             dataset=dataset,
             sampler=torch.utils.data.sampler.SequentialSampler(dataset),
             batch_size=cfg.TEST.BATCH_SIZE,
-            num_workers=cfg.NUM_WORKERS,
+            num_workers=cfg.DATASET.NUM_WORKERS,
             collate_fn=cf,
         )
     return loader

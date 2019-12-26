@@ -1,6 +1,8 @@
-EXPERIMENT: 'test'
-CUDA_VISIBLE_DEVICES: "'2,'"
-TRAIN:
-  CACHE: False
+PATH:
+  EXPERIMENT_DIR: 'test_new_'
 MODEL:
+  DEVICE_ID: "'2,3'"
   BNNECK: True
+TRAIN:
+  CACHE: True
+  

@@ -7,11 +7,20 @@ import numpy as np
 import time
 from utils.format_seconds import fmt_secs
 
-def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
+def do_train(model, optimizer, cfg, train_loader, scheduler, loss, iteration=0):
     logger = logging.getLogger(cfg.LOGGER.NAME)
     logger.info('Training starts.')
+    
+    full_loss_record = []
+    hard_loss_record = []
+    mean_dist_record = []
+    full_loss_nm_record = []
+
+    model = nn.DataParallel(model.float()).cuda()
+    loss = nn.DataParallel(loss.float()).cuda()
+
     # save the model structure for one time
-    f = os.path.join(cfg.OUTPUT_DIR, cfg.EXPERIMENT, cfg.CHECKPOINT_DIR, 'structure.pt')
+    f = os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR, cfg.PATH.CHECKPOINT_DIR, 'structure.pt')
     if not os.path.exists(f):
         logger.info('No structure file detected, serialize structure of model and optimizer into %s', f)
         torch.save(
@@ -22,18 +31,10 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
     if iteration != 0:
         logger.info('Continuing training process from %d', iteration)
         logger.info('Loading weight file now')
-        f = os.path.join(cfg.OUTPUT_DIR,cfg.EXPERIMENT,cfg.CHECKPOINT_DIR,'{}_{}.pt'.format(cfg.MODEL.NAME,iteration))
+        f = os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR, cfg.PATH.CHECKPOINT_DIR,'{}_{}.pt'.format(cfg.MODEL.NAME,iteration))
         (model_weight, opt_weight) = torch.load(f)
         model.load_state_dict(model_weight)
         optimizer.load_state_dict(opt_weight)
-    
-    full_loss_record = []
-    hard_loss_record = []
-    mean_dist_record = []
-    full_loss_nm_record = []
-
-    model = nn.DataParallel(model.float()).cuda()
-    loss = nn.DataParallel(loss.float()).cuda()
 
     model.train()
     train_ids = list(set(train_loader.dataset.ids))
@@ -65,13 +66,13 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
         _container = loss(feature, ids_gt)
         full_loss, hard_loss, mean_dist, full_loss_nm = _container
         
-        if cfg.TRAIN.TRIPLET_LOSS.TYPE == 'full':
+        if cfg.TRIPLET_LOSS.TYPE == 'full':
             loss_chosen = full_loss.mean()
-        elif cfg.TRAIN.TRIPLET_LOSS.TYPE == 'hard':
+        elif cfg.TRIPLET_LOSS.TYPE == 'hard':
             loss_chosen = hard_loss.mean()
 
         if cfg.MODEL.BNNECK:
-            loss_chosen = loss_chosen + cls_loss / 10.
+            loss_chosen = loss_chosen + cls_loss / cfg.MODEL.CE_DIVIDED
 
         full_loss_record.append(full_loss.mean().data.cpu().numpy())
         hard_loss_record.append(hard_loss.mean().data.cpu().numpy())
@@ -80,15 +81,16 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
         
         loss_chosen.backward()
         optimizer.step()
+        scheduler.step()
 
         _end = time.time()
 
         if iteration % cfg.TRAIN.RECORD_STEP == 0:
             # save weight first
             f = os.path.join(
-                    cfg.OUTPUT_DIR,
-                    cfg.EXPERIMENT,
-                    cfg.CHECKPOINT_DIR,
+                    cfg.PATH.OUTPUT_DIR,
+                    cfg.PATH.EXPERIMENT_DIR,
+                    cfg.PATH.CHECKPOINT_DIR,
                     '{}_{}.pt'.format(
                         cfg.MODEL.NAME,
                         iteration
@@ -103,18 +105,18 @@ def do_train(model, optimizer, cfg, train_loader, loss, iteration=0):
 
         if iteration % cfg.TRAIN.DISPLAY_INFO_STEP == 0:
             logger.info('Iteration %d', iteration)
-            logger.info('Hard triplet loss value is '+cfg.DISPLAY_FLOAT_FORMAT, np.mean(hard_loss_record))
-            logger.info('Full triplet loss value is '+cfg.DISPLAY_FLOAT_FORMAT, np.mean(full_loss_record))
-            logger.info('Number of positive full loss entries is '+cfg.DISPLAY_FLOAT_FORMAT, np.mean(full_loss_nm_record))
-            logger.info('Mean dist is '+cfg.DISPLAY_FLOAT_FORMAT, np.mean(mean_dist_record))
-            logger.info('Current learning rate is '+cfg.DISPLAY_FLOAT_FORMAT, optimizer.param_groups[0]['lr'])
-            logger.info('Current triplet loss type is %s', cfg.TRAIN.TRIPLET_LOSS.TYPE)
-            if cfg.TRAIN.TRIPLET_LOSS.TYPE == 'full':
-                logger.info('Current full triplet loss value is '+cfg.DISPLAY_FLOAT_FORMAT, full_loss.mean().data.cpu().numpy().tolist())
-            elif cfg.TRAIN.TRIPLET_LOSS.TYPE == 'hard':
-                logger.info('Current hard triplet loss value is '+cfg.DISPLAY_FLOAT_FORMAT, hard_loss.mean().data.cpu().numpy().tolist())
+            logger.info('Hard triplet loss value is %.5f', np.mean(hard_loss_record))
+            logger.info('Full triplet loss value is %.5f', np.mean(full_loss_record))
+            logger.info('Number of positive full loss entries is %.5f', np.mean(full_loss_nm_record))
+            logger.info('Mean dist is %.5f', np.mean(mean_dist_record))
+            logger.info('Current learning rate is %.5f', optimizer.param_groups[0]['lr'])
+            logger.info('Current triplet loss type is %s', cfg.TRIPLET_LOSS.TYPE)
+            if cfg.TRIPLET_LOSS.TYPE == 'full':
+                logger.info('Current full triplet loss value is %.5f', full_loss.mean().data.cpu().numpy().tolist())
+            elif cfg.TRIPLET_LOSS.TYPE == 'hard':
+                logger.info('Current hard triplet loss value is %.5f', hard_loss.mean().data.cpu().numpy().tolist())
             if cfg.MODEL.BNNECK:
-                logger.info('Current cross-entropy loss is '+cfg.DISPLAY_FLOAT_FORMAT, cls_loss.data.cpu().numpy().tolist()) 
+                logger.info('Current cross-entropy loss is %.5f', cls_loss.data.cpu().numpy().tolist()) 
             hard_loss_record = []
             full_loss_nm_record = []
             full_loss_record = []

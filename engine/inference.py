@@ -12,7 +12,7 @@ def compute_cosine_dist(ndarr1, ndarr2):
     norm_arr1 = np.linalg.norm(ndarr1, axis=1).reshape(-1, 1)
     norm_arr2 = np.linalg.norm(ndarr2, axis=1).reshape(1, -1)
     norm_mat = np.matmul(norm_arr1, norm_arr2)
-    return dot / norm_mat
+    return 1. - dot / norm_mat
 
 def exclude_identical(acc, flattened_view=True):
     res = np.sum(acc - np.diag(np.diag(acc)), 1) / 10
@@ -37,10 +37,12 @@ def do_test(model, cfg, test_loader):
     for items in test_loader:
         data, view_, status_, id_, batch_frames = items
         batch_frames = torch.tensor(batch_frames).cuda()
+        data = data.cuda()
         if not cfg.MODEL.BNNECK:
-            feature_ = model(data, batch_frames).contiguous()
+            feature_ = model(data, batch_frames)
         else:
-            _, _, feature_ = model(data, batch_frames)
+            feature_, _, _ = model(data, batch_frames)
+
         n, num_bins, _ = feature_.size()
         features.append(feature_.view(n, -1).data.cpu().numpy())
         views += view_
@@ -69,32 +71,31 @@ def do_test(model, cfg, test_loader):
                 p_mask = np.isin(status, ps_) & np.isin(views, [probe_view])
                 probe_x = features[p_mask, :]
                 probe_y = ids[p_mask]
-
+                
                 if not cfg.MODEL.BNNECK:
                     dist = compute_euclidean_dist(probe_x, gallery_x)
                 else:
-                    dist = compute_cosine_dist(probe_x, gallery_x)
+                    dist = compute_euclidean_dist(probe_x, gallery_x)
                 idx = np.argsort(dist, axis=1)
-                
                 acc[ps_idx, v1, v2, :] = np.round(np.sum(np.cumsum(np.expand_dims(probe_y, -1) == gallery_y[idx[:, :cfg.TEST.NUM_RANKS]], 1) > 0, 0) * 100 / dist.shape[0], 2)
     
     logger.info('Acc compute finishied.')
 
-    for i in range(cfg.TEST.DISPLAY_NUM_RANKS):
+    for i in range(1):
         logger.info('===Rank-%d (Include identical-view cases)===', i + 1)
         logger.info('NM: %.3f,\tBG: %.3f,\tCL: %.3f', 
             np.mean(acc[0, :, :, i]),
             np.mean(acc[1, :, :, i]),
             np.mean(acc[2, :, :, i]))
 
-    for i in range(cfg.TEST.DISPLAY_NUM_RANKS):
+    for i in range(1):
         logger.info('===Rank-%d (Exclude identical-view cases)===', i + 1)
         logger.info('NM: %.3f,\tBG: %.3f,\tCL: %.3f', 
             exclude_identical(acc[0, :, :, i], False),
             exclude_identical(acc[1, :, :, i], False),
             exclude_identical(acc[2, :, :, i], False))
 
-    for i in range(cfg.TEST.DISPLAY_NUM_RANKS):
+    for i in range(1):
         logger.info('===Rank-%d of each angle (Exclude identical-view cases)===', i + 1)
         logger.info('NM:%s', list_to_str(exclude_identical(acc[0, :, :, i], True).tolist()))
         logger.info('BG:%s', list_to_str(exclude_identical(acc[1, :, :, i], True).tolist()))

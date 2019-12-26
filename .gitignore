@@ -9,4 +9,6 @@ data/__pycache__
 data/datasets/__pycache__
 data/transforms/__pycache__
 config/__pycache__
+test_logs/
 nohup.out
+test_script.sh
