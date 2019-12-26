@@ -1,0 +1,322 @@
+2019-12-26 10:31:56,659 TestEpoch-10000 INFO: Testing logger setup finished
+2019-12-26 10:31:56,659 TestEpoch-10000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:31:56,660 TestEpoch-10000 INFO: Be advised we used model of iteration 10000
+2019-12-26 10:32:04,186 TestEpoch-10000 INFO: Testing starts.
+2019-12-26 10:32:27,059 TestEpoch-10000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:32:35,523 TestEpoch-10000 INFO: Acc compute finishied.
+2019-12-26 10:32:35,524 TestEpoch-10000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:32:35,524 TestEpoch-10000 INFO: NM: 92.785,	BG: 83.545,	CL: 66.810
+2019-12-26 10:32:35,524 TestEpoch-10000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:32:35,525 TestEpoch-10000 INFO: NM: 92.091,	BG: 82.264,	CL: 65.218
+2019-12-26 10:32:35,525 TestEpoch-10000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:32:35,525 TestEpoch-10000 INFO: NM:[85.8, 95.2, 97.1, 94.7, 90.0, 89.3, 92.4, 96.7, 95.5, 93.7, 82.6]
+2019-12-26 10:32:35,525 TestEpoch-10000 INFO: BG:[76.9, 85.4, 90.2, 84.8, 79.3, 72.8, 79.8, 86.1, 90.5, 85.3, 73.8]
+2019-12-26 10:32:35,526 TestEpoch-10000 INFO: CL:[58.4, 71.1, 75.4, 69.9, 67.7, 63.4, 65.9, 69.1, 67.8, 60.4, 48.3]
+2019-12-26 10:32:36,846 TestEpoch-15000 INFO: Testing logger setup finished
+2019-12-26 10:32:36,847 TestEpoch-15000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:32:36,847 TestEpoch-15000 INFO: Be advised we used model of iteration 15000
+2019-12-26 10:32:44,293 TestEpoch-15000 INFO: Testing starts.
+2019-12-26 10:33:07,364 TestEpoch-15000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:33:15,403 TestEpoch-15000 INFO: Acc compute finishied.
+2019-12-26 10:33:15,405 TestEpoch-15000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:33:15,405 TestEpoch-15000 INFO: NM: 94.083,	BG: 84.947,	CL: 68.339
+2019-12-26 10:33:15,407 TestEpoch-15000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:33:15,408 TestEpoch-15000 INFO: NM: 93.491,	BG: 83.715,	CL: 66.636
+2019-12-26 10:33:15,408 TestEpoch-15000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:33:15,409 TestEpoch-15000 INFO: NM:[87.4, 97.3, 98.6, 96.4, 92.0, 89.6, 93.1, 96.6, 96.1, 95.0, 86.3]
+2019-12-26 10:33:15,410 TestEpoch-15000 INFO: BG:[77.8, 87.8, 91.5, 88.4, 81.8, 73.9, 81.1, 87.6, 90.4, 87.5, 73.1]
+2019-12-26 10:33:15,410 TestEpoch-15000 INFO: CL:[60.9, 72.0, 78.1, 73.1, 69.1, 64.0, 66.0, 70.3, 69.8, 60.6, 49.1]
+2019-12-26 10:33:16,824 TestEpoch-20000 INFO: Testing logger setup finished
+2019-12-26 10:33:16,824 TestEpoch-20000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:33:16,825 TestEpoch-20000 INFO: Be advised we used model of iteration 20000
+2019-12-26 10:33:24,491 TestEpoch-20000 INFO: Testing starts.
+2019-12-26 10:33:46,852 TestEpoch-20000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:33:54,913 TestEpoch-20000 INFO: Acc compute finishied.
+2019-12-26 10:33:54,913 TestEpoch-20000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:33:54,913 TestEpoch-20000 INFO: NM: 94.413,	BG: 86.270,	CL: 67.711
+2019-12-26 10:33:54,913 TestEpoch-20000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:33:54,914 TestEpoch-20000 INFO: NM: 93.864,	BG: 85.197,	CL: 65.936
+2019-12-26 10:33:54,914 TestEpoch-20000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:33:54,914 TestEpoch-20000 INFO: NM:[89.5, 96.8, 98.2, 96.5, 91.2, 90.6, 93.3, 97.1, 96.7, 95.9, 86.7]
+2019-12-26 10:33:54,914 TestEpoch-20000 INFO: BG:[82.1, 87.7, 90.8, 88.3, 82.4, 77.4, 81.6, 88.2, 92.7, 88.6, 77.4]
+2019-12-26 10:33:54,914 TestEpoch-20000 INFO: CL:[60.2, 72.8, 77.2, 71.7, 67.2, 63.3, 66.5, 69.3, 68.5, 60.9, 47.7]
+2019-12-26 10:33:56,475 TestEpoch-25000 INFO: Testing logger setup finished
+2019-12-26 10:33:56,479 TestEpoch-25000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:33:56,479 TestEpoch-25000 INFO: Be advised we used model of iteration 25000
+2019-12-26 10:34:03,916 TestEpoch-25000 INFO: Testing starts.
+2019-12-26 10:34:26,420 TestEpoch-25000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:34:35,300 TestEpoch-25000 INFO: Acc compute finishied.
+2019-12-26 10:34:35,301 TestEpoch-25000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:34:35,302 TestEpoch-25000 INFO: NM: 94.471,	BG: 86.138,	CL: 70.694
+2019-12-26 10:34:35,302 TestEpoch-25000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:34:35,303 TestEpoch-25000 INFO: NM: 93.918,	BG: 85.007,	CL: 69.009
+2019-12-26 10:34:35,304 TestEpoch-25000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:34:35,304 TestEpoch-25000 INFO: NM:[90.2, 96.6, 98.7, 96.8, 91.0, 90.2, 93.1, 97.5, 97.9, 95.7, 85.4]
+2019-12-26 10:34:35,305 TestEpoch-25000 INFO: BG:[81.1, 88.9, 92.0, 88.3, 81.2, 76.4, 80.6, 88.5, 92.6, 89.0, 76.5]
+2019-12-26 10:34:35,306 TestEpoch-25000 INFO: CL:[66.0, 75.0, 79.4, 74.7, 68.7, 66.1, 68.5, 70.9, 70.4, 67.0, 52.4]
+2019-12-26 10:34:36,649 TestEpoch-30000 INFO: Testing logger setup finished
+2019-12-26 10:34:36,649 TestEpoch-30000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:34:36,649 TestEpoch-30000 INFO: Be advised we used model of iteration 30000
+2019-12-26 10:34:44,090 TestEpoch-30000 INFO: Testing starts.
+2019-12-26 10:35:07,414 TestEpoch-30000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:35:17,458 TestEpoch-30000 INFO: Acc compute finishied.
+2019-12-26 10:35:17,459 TestEpoch-30000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:35:17,460 TestEpoch-30000 INFO: NM: 94.397,	BG: 86.734,	CL: 70.149
+2019-12-26 10:35:17,461 TestEpoch-30000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:35:17,462 TestEpoch-30000 INFO: NM: 93.836,	BG: 85.644,	CL: 68.445
+2019-12-26 10:35:17,465 TestEpoch-30000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:35:17,466 TestEpoch-30000 INFO: NM:[88.7, 96.8, 98.4, 96.6, 91.8, 90.8, 93.8, 96.8, 96.7, 96.0, 85.8]
+2019-12-26 10:35:17,466 TestEpoch-30000 INFO: BG:[82.4, 90.4, 92.1, 88.2, 81.9, 76.5, 82.2, 88.1, 92.4, 89.9, 78.0]
+2019-12-26 10:35:17,467 TestEpoch-30000 INFO: CL:[66.4, 75.1, 79.9, 73.5, 68.1, 63.7, 68.3, 69.6, 70.9, 66.7, 50.7]
+2019-12-26 10:35:18,883 TestEpoch-35000 INFO: Testing logger setup finished
+2019-12-26 10:35:18,883 TestEpoch-35000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:35:18,884 TestEpoch-35000 INFO: Be advised we used model of iteration 35000
+2019-12-26 10:35:26,053 TestEpoch-35000 INFO: Testing starts.
+2019-12-26 10:35:52,655 TestEpoch-35000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:36:04,051 TestEpoch-35000 INFO: Acc compute finishied.
+2019-12-26 10:36:04,051 TestEpoch-35000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:36:04,052 TestEpoch-35000 INFO: NM: 94.612,	BG: 86.975,	CL: 70.198
+2019-12-26 10:36:04,052 TestEpoch-35000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:36:04,052 TestEpoch-35000 INFO: NM: 94.082,	BG: 85.882,	CL: 68.573
+2019-12-26 10:36:04,052 TestEpoch-35000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:36:04,053 TestEpoch-35000 INFO: NM:[90.7, 97.0, 98.6, 96.8, 91.6, 90.2, 93.7, 97.3, 98.0, 95.7, 85.3]
+2019-12-26 10:36:04,053 TestEpoch-35000 INFO: BG:[82.0, 87.5, 91.9, 89.7, 82.6, 76.7, 82.7, 90.3, 93.2, 90.2, 77.9]
+2019-12-26 10:36:04,053 TestEpoch-35000 INFO: CL:[63.1, 74.2, 80.6, 75.0, 69.0, 66.7, 68.5, 71.1, 71.3, 64.5, 50.3]
+2019-12-26 10:36:05,545 TestEpoch-40000 INFO: Testing logger setup finished
+2019-12-26 10:36:05,546 TestEpoch-40000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:36:05,546 TestEpoch-40000 INFO: Be advised we used model of iteration 40000
+2019-12-26 10:36:13,022 TestEpoch-40000 INFO: Testing starts.
+2019-12-26 10:36:37,802 TestEpoch-40000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:36:46,577 TestEpoch-40000 INFO: Acc compute finishied.
+2019-12-26 10:36:46,577 TestEpoch-40000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:36:46,577 TestEpoch-40000 INFO: NM: 94.942,	BG: 86.129,	CL: 70.231
+2019-12-26 10:36:46,578 TestEpoch-40000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:36:46,578 TestEpoch-40000 INFO: NM: 94.445,	BG: 85.006,	CL: 68.555
+2019-12-26 10:36:46,578 TestEpoch-40000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:36:46,578 TestEpoch-40000 INFO: NM:[90.9, 97.2, 98.5, 96.7, 92.9, 91.3, 94.0, 96.9, 96.5, 96.5, 87.5]
+2019-12-26 10:36:46,578 TestEpoch-40000 INFO: BG:[82.6, 88.2, 91.8, 88.1, 82.0, 76.4, 81.1, 87.6, 91.9, 88.1, 77.3]
+2019-12-26 10:36:46,579 TestEpoch-40000 INFO: CL:[65.9, 72.6, 80.6, 74.7, 69.6, 67.2, 68.8, 71.2, 70.7, 64.5, 48.3]
+2019-12-26 10:36:47,946 TestEpoch-45000 INFO: Testing logger setup finished
+2019-12-26 10:36:47,946 TestEpoch-45000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:36:47,947 TestEpoch-45000 INFO: Be advised we used model of iteration 45000
+2019-12-26 10:36:55,717 TestEpoch-45000 INFO: Testing starts.
+2019-12-26 10:37:19,801 TestEpoch-45000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:37:30,415 TestEpoch-45000 INFO: Acc compute finishied.
+2019-12-26 10:37:30,415 TestEpoch-45000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:37:30,416 TestEpoch-45000 INFO: NM: 95.388,	BG: 87.646,	CL: 70.760
+2019-12-26 10:37:30,416 TestEpoch-45000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:37:30,416 TestEpoch-45000 INFO: NM: 94.936,	BG: 86.583,	CL: 69.100
+2019-12-26 10:37:30,416 TestEpoch-45000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:37:30,417 TestEpoch-45000 INFO: NM:[91.5, 97.1, 98.8, 97.0, 93.0, 91.1, 94.7, 97.7, 98.2, 96.5, 88.7]
+2019-12-26 10:37:30,417 TestEpoch-45000 INFO: BG:[84.2, 89.7, 92.7, 89.7, 82.6, 77.3, 82.6, 89.2, 93.2, 91.7, 79.5]
+2019-12-26 10:37:30,417 TestEpoch-45000 INFO: CL:[64.2, 73.6, 80.8, 75.3, 69.3, 66.7, 68.7, 72.3, 71.9, 65.8, 51.5]
+2019-12-26 10:37:31,906 TestEpoch-50000 INFO: Testing logger setup finished
+2019-12-26 10:37:31,906 TestEpoch-50000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:37:31,907 TestEpoch-50000 INFO: Be advised we used model of iteration 50000
+2019-12-26 10:37:40,721 TestEpoch-50000 INFO: Testing starts.
+2019-12-26 10:38:06,717 TestEpoch-50000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:38:18,163 TestEpoch-50000 INFO: Acc compute finishied.
+2019-12-26 10:38:18,163 TestEpoch-50000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:38:18,163 TestEpoch-50000 INFO: NM: 95.149,	BG: 87.174,	CL: 70.851
+2019-12-26 10:38:18,164 TestEpoch-50000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:38:18,164 TestEpoch-50000 INFO: NM: 94.673,	BG: 86.137,	CL: 69.182
+2019-12-26 10:38:18,164 TestEpoch-50000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:38:18,164 TestEpoch-50000 INFO: NM:[91.1, 96.8, 98.9, 96.9, 93.0, 90.6, 94.6, 97.5, 97.9, 96.2, 87.9]
+2019-12-26 10:38:18,164 TestEpoch-50000 INFO: BG:[84.0, 89.4, 92.8, 89.7, 82.2, 76.6, 81.5, 88.8, 93.0, 90.7, 78.8]
+2019-12-26 10:38:18,165 TestEpoch-50000 INFO: CL:[65.0, 74.4, 80.1, 74.6, 69.5, 67.2, 69.5, 72.3, 71.5, 65.8, 51.1]
+2019-12-26 10:38:19,632 TestEpoch-55000 INFO: Testing logger setup finished
+2019-12-26 10:38:19,632 TestEpoch-55000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:38:19,633 TestEpoch-55000 INFO: Be advised we used model of iteration 55000
+2019-12-26 10:38:27,750 TestEpoch-55000 INFO: Testing starts.
+2019-12-26 10:38:56,367 TestEpoch-55000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:39:06,586 TestEpoch-55000 INFO: Acc compute finishied.
+2019-12-26 10:39:06,587 TestEpoch-55000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:39:06,587 TestEpoch-55000 INFO: NM: 95.107,	BG: 87.323,	CL: 70.421
+2019-12-26 10:39:06,587 TestEpoch-55000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:39:06,588 TestEpoch-55000 INFO: NM: 94.627,	BG: 86.274,	CL: 68.755
+2019-12-26 10:39:06,588 TestEpoch-55000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:39:06,588 TestEpoch-55000 INFO: NM:[91.1, 96.7, 98.5, 97.0, 92.8, 90.9, 94.6, 97.4, 97.8, 96.5, 87.6]
+2019-12-26 10:39:06,588 TestEpoch-55000 INFO: BG:[83.5, 89.6, 92.5, 89.5, 82.1, 77.1, 81.6, 89.4, 93.1, 91.8, 78.8]
+2019-12-26 10:39:06,589 TestEpoch-55000 INFO: CL:[63.9, 73.5, 80.1, 75.2, 69.0, 66.7, 68.8, 71.6, 71.5, 65.3, 50.7]
+2019-12-26 10:39:08,085 TestEpoch-60000 INFO: Testing logger setup finished
+2019-12-26 10:39:08,086 TestEpoch-60000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:39:08,086 TestEpoch-60000 INFO: Be advised we used model of iteration 60000
+2019-12-26 10:39:15,581 TestEpoch-60000 INFO: Testing starts.
+2019-12-26 10:39:41,545 TestEpoch-60000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:39:53,377 TestEpoch-60000 INFO: Acc compute finishied.
+2019-12-26 10:39:53,377 TestEpoch-60000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:39:53,377 TestEpoch-60000 INFO: NM: 95.446,	BG: 87.488,	CL: 70.760
+2019-12-26 10:39:53,378 TestEpoch-60000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:39:53,378 TestEpoch-60000 INFO: NM: 95.000,	BG: 86.428,	CL: 69.127
+2019-12-26 10:39:53,378 TestEpoch-60000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:39:53,378 TestEpoch-60000 INFO: NM:[91.4, 97.5, 98.8, 97.0, 94.3, 90.8, 94.9, 97.5, 98.1, 96.5, 88.2]
+2019-12-26 10:39:53,379 TestEpoch-60000 INFO: BG:[84.1, 89.9, 92.8, 89.9, 82.9, 76.8, 81.8, 88.9, 92.7, 90.9, 80.0]
+2019-12-26 10:39:53,379 TestEpoch-60000 INFO: CL:[64.2, 74.1, 79.5, 75.7, 69.3, 67.6, 69.2, 72.2, 71.6, 66.2, 50.8]
+2019-12-26 10:39:54,938 TestEpoch-65000 INFO: Testing logger setup finished
+2019-12-26 10:39:54,938 TestEpoch-65000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:39:54,938 TestEpoch-65000 INFO: Be advised we used model of iteration 65000
+2019-12-26 10:40:02,317 TestEpoch-65000 INFO: Testing starts.
+2019-12-26 10:40:29,913 TestEpoch-65000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:40:40,870 TestEpoch-65000 INFO: Acc compute finishied.
+2019-12-26 10:40:40,872 TestEpoch-65000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:40:40,873 TestEpoch-65000 INFO: NM: 95.165,	BG: 87.381,	CL: 70.174
+2019-12-26 10:40:40,874 TestEpoch-65000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:40:40,875 TestEpoch-65000 INFO: NM: 94.691,	BG: 86.292,	CL: 68.491
+2019-12-26 10:40:40,875 TestEpoch-65000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:40:40,876 TestEpoch-65000 INFO: NM:[91.5, 97.2, 98.6, 96.9, 93.1, 90.5, 94.2, 97.6, 97.7, 96.5, 87.8]
+2019-12-26 10:40:40,878 TestEpoch-65000 INFO: BG:[83.9, 89.7, 92.6, 89.6, 82.9, 77.2, 81.2, 89.1, 93.0, 91.2, 78.8]
+2019-12-26 10:40:40,879 TestEpoch-65000 INFO: CL:[63.7, 73.7, 79.6, 74.5, 68.6, 66.9, 69.0, 72.2, 70.9, 64.9, 49.4]
+2019-12-26 10:40:42,425 TestEpoch-70000 INFO: Testing logger setup finished
+2019-12-26 10:40:42,425 TestEpoch-70000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:40:42,426 TestEpoch-70000 INFO: Be advised we used model of iteration 70000
+2019-12-26 10:40:49,937 TestEpoch-70000 INFO: Testing starts.
+2019-12-26 10:41:15,570 TestEpoch-70000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:41:27,455 TestEpoch-70000 INFO: Acc compute finishied.
+2019-12-26 10:41:27,456 TestEpoch-70000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:41:27,458 TestEpoch-70000 INFO: NM: 95.231,	BG: 87.431,	CL: 70.207
+2019-12-26 10:41:27,458 TestEpoch-70000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:41:27,459 TestEpoch-70000 INFO: NM: 94.764,	BG: 86.374,	CL: 68.545
+2019-12-26 10:41:27,460 TestEpoch-70000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:41:27,461 TestEpoch-70000 INFO: NM:[91.3, 97.1, 98.6, 96.8, 93.2, 90.7, 94.7, 97.7, 98.2, 96.3, 87.8]
+2019-12-26 10:41:27,462 TestEpoch-70000 INFO: BG:[84.1, 90.0, 92.6, 89.0, 82.8, 77.1, 81.6, 88.8, 92.9, 92.3, 78.9]
+2019-12-26 10:41:27,462 TestEpoch-70000 INFO: CL:[64.0, 74.0, 79.4, 74.1, 68.6, 66.8, 68.5, 71.9, 71.5, 65.9, 49.3]
+2019-12-26 10:41:28,930 TestEpoch-75000 INFO: Testing logger setup finished
+2019-12-26 10:41:28,930 TestEpoch-75000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:41:28,930 TestEpoch-75000 INFO: Be advised we used model of iteration 75000
+2019-12-26 10:41:36,708 TestEpoch-75000 INFO: Testing starts.
+2019-12-26 10:42:02,920 TestEpoch-75000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:42:15,680 TestEpoch-75000 INFO: Acc compute finishied.
+2019-12-26 10:42:15,681 TestEpoch-75000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:42:15,681 TestEpoch-75000 INFO: NM: 95.339,	BG: 87.406,	CL: 70.554
+2019-12-26 10:42:15,681 TestEpoch-75000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:42:15,682 TestEpoch-75000 INFO: NM: 94.882,	BG: 86.329,	CL: 68.891
+2019-12-26 10:42:15,682 TestEpoch-75000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:42:15,682 TestEpoch-75000 INFO: NM:[91.5, 96.9, 98.7, 97.0, 93.6, 91.1, 94.5, 97.6, 98.0, 96.3, 88.5]
+2019-12-26 10:42:15,682 TestEpoch-75000 INFO: BG:[84.2, 89.7, 92.4, 89.5, 82.5, 77.2, 81.4, 88.6, 92.9, 91.8, 79.4]
+2019-12-26 10:42:15,682 TestEpoch-75000 INFO: CL:[64.6, 73.7, 79.8, 74.7, 69.1, 66.8, 69.0, 72.1, 71.1, 66.6, 50.3]
+2019-12-26 10:42:17,114 TestEpoch-80000 INFO: Testing logger setup finished
+2019-12-26 10:42:17,114 TestEpoch-80000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:42:17,115 TestEpoch-80000 INFO: Be advised we used model of iteration 80000
+2019-12-26 10:42:24,496 TestEpoch-80000 INFO: Testing starts.
+2019-12-26 10:42:50,961 TestEpoch-80000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:43:03,655 TestEpoch-80000 INFO: Acc compute finishied.
+2019-12-26 10:43:03,656 TestEpoch-80000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:43:03,657 TestEpoch-80000 INFO: NM: 95.298,	BG: 87.423,	CL: 70.397
+2019-12-26 10:43:03,657 TestEpoch-80000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:43:03,658 TestEpoch-80000 INFO: NM: 94.836,	BG: 86.365,	CL: 68.727
+2019-12-26 10:43:03,658 TestEpoch-80000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:43:03,659 TestEpoch-80000 INFO: NM:[91.4, 97.0, 98.7, 97.0, 93.6, 91.0, 94.6, 97.4, 98.0, 96.4, 88.1]
+2019-12-26 10:43:03,659 TestEpoch-80000 INFO: BG:[84.3, 90.0, 92.6, 89.4, 82.4, 77.2, 81.3, 88.3, 92.8, 92.1, 79.6]
+2019-12-26 10:43:03,659 TestEpoch-80000 INFO: CL:[64.3, 73.7, 79.7, 74.7, 69.2, 66.5, 69.1, 71.7, 71.3, 65.8, 50.0]
+2019-12-26 10:43:05,225 TestEpoch-85000 INFO: Testing logger setup finished
+2019-12-26 10:43:05,225 TestEpoch-85000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:43:05,226 TestEpoch-85000 INFO: Be advised we used model of iteration 85000
+2019-12-26 10:43:12,566 TestEpoch-85000 INFO: Testing starts.
+2019-12-26 10:43:43,225 TestEpoch-85000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:43:54,796 TestEpoch-85000 INFO: Acc compute finishied.
+2019-12-26 10:43:54,798 TestEpoch-85000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:43:54,799 TestEpoch-85000 INFO: NM: 95.339,	BG: 87.431,	CL: 70.413
+2019-12-26 10:43:54,799 TestEpoch-85000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:43:54,800 TestEpoch-85000 INFO: NM: 94.882,	BG: 86.365,	CL: 68.764
+2019-12-26 10:43:54,801 TestEpoch-85000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:43:54,802 TestEpoch-85000 INFO: NM:[91.6, 96.9, 98.7, 96.9, 93.7, 91.1, 94.6, 97.5, 97.9, 96.4, 88.4]
+2019-12-26 10:43:54,803 TestEpoch-85000 INFO: BG:[84.3, 89.9, 92.5, 89.7, 82.5, 77.4, 81.1, 88.4, 93.1, 91.8, 79.3]
+2019-12-26 10:43:54,803 TestEpoch-85000 INFO: CL:[64.1, 73.8, 79.7, 74.8, 69.4, 66.9, 68.9, 71.7, 71.2, 66.3, 49.6]
+2019-12-26 10:43:56,239 TestEpoch-90000 INFO: Testing logger setup finished
+2019-12-26 10:43:56,239 TestEpoch-90000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:43:56,240 TestEpoch-90000 INFO: Be advised we used model of iteration 90000
+2019-12-26 10:44:04,702 TestEpoch-90000 INFO: Testing starts.
+2019-12-26 10:44:33,414 TestEpoch-90000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:44:45,901 TestEpoch-90000 INFO: Acc compute finishied.
+2019-12-26 10:44:45,903 TestEpoch-90000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:44:45,903 TestEpoch-90000 INFO: NM: 95.314,	BG: 87.572,	CL: 70.372
+2019-12-26 10:44:45,904 TestEpoch-90000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:44:45,905 TestEpoch-90000 INFO: NM: 94.855,	BG: 86.502,	CL: 68.700
+2019-12-26 10:44:45,906 TestEpoch-90000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:44:45,906 TestEpoch-90000 INFO: NM:[91.3, 97.0, 98.7, 97.0, 93.5, 91.2, 94.5, 97.6, 98.0, 96.4, 88.2]
+2019-12-26 10:44:45,907 TestEpoch-90000 INFO: BG:[84.5, 89.8, 92.7, 89.8, 82.5, 77.4, 81.5, 88.4, 93.0, 92.0, 79.9]
+2019-12-26 10:44:45,908 TestEpoch-90000 INFO: CL:[64.0, 73.6, 79.8, 75.0, 69.0, 66.3, 69.2, 71.7, 71.3, 65.9, 49.9]
+2019-12-26 10:44:47,383 TestEpoch-95000 INFO: Testing logger setup finished
+2019-12-26 10:44:47,383 TestEpoch-95000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:44:47,384 TestEpoch-95000 INFO: Be advised we used model of iteration 95000
+2019-12-26 10:44:54,917 TestEpoch-95000 INFO: Testing starts.
+2019-12-26 10:45:21,062 TestEpoch-95000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:45:34,456 TestEpoch-95000 INFO: Acc compute finishied.
+2019-12-26 10:45:34,457 TestEpoch-95000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:45:34,457 TestEpoch-95000 INFO: NM: 95.372,	BG: 87.497,	CL: 70.372
+2019-12-26 10:45:34,458 TestEpoch-95000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:45:34,458 TestEpoch-95000 INFO: NM: 94.918,	BG: 86.429,	CL: 68.727
+2019-12-26 10:45:34,458 TestEpoch-95000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:45:34,458 TestEpoch-95000 INFO: NM:[91.5, 97.1, 98.8, 97.0, 93.6, 91.0, 94.5, 97.5, 98.2, 96.5, 88.4]
+2019-12-26 10:45:34,459 TestEpoch-95000 INFO: BG:[84.3, 89.8, 92.6, 89.6, 82.6, 77.1, 81.3, 88.6, 93.0, 92.1, 79.7]
+2019-12-26 10:45:34,459 TestEpoch-95000 INFO: CL:[63.9, 74.0, 79.7, 75.0, 69.4, 66.5, 69.0, 71.9, 71.2, 65.7, 49.7]
+2019-12-26 10:45:35,909 TestEpoch-100000 INFO: Testing logger setup finished
+2019-12-26 10:45:35,910 TestEpoch-100000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:45:35,910 TestEpoch-100000 INFO: Be advised we used model of iteration 100000
+2019-12-26 10:45:43,573 TestEpoch-100000 INFO: Testing starts.
+2019-12-26 10:46:15,848 TestEpoch-100000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:46:27,052 TestEpoch-100000 INFO: Acc compute finishied.
+2019-12-26 10:46:27,053 TestEpoch-100000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:46:27,053 TestEpoch-100000 INFO: NM: 95.273,	BG: 87.489,	CL: 70.438
+2019-12-26 10:46:27,054 TestEpoch-100000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:46:27,054 TestEpoch-100000 INFO: NM: 94.809,	BG: 86.420,	CL: 68.800
+2019-12-26 10:46:27,054 TestEpoch-100000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:46:27,054 TestEpoch-100000 INFO: NM:[91.5, 96.8, 98.7, 96.9, 93.4, 91.0, 94.5, 97.5, 98.0, 96.4, 88.2]
+2019-12-26 10:46:27,055 TestEpoch-100000 INFO: BG:[84.8, 89.9, 92.4, 89.8, 82.6, 76.9, 81.3, 88.7, 93.2, 91.6, 79.4]
+2019-12-26 10:46:27,055 TestEpoch-100000 INFO: CL:[63.8, 73.6, 79.8, 74.8, 69.2, 66.6, 69.2, 72.1, 71.4, 66.1, 50.2]
+2019-12-26 10:46:28,608 TestEpoch-105000 INFO: Testing logger setup finished
+2019-12-26 10:46:28,608 TestEpoch-105000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:46:28,609 TestEpoch-105000 INFO: Be advised we used model of iteration 105000
+2019-12-26 10:46:36,257 TestEpoch-105000 INFO: Testing starts.
+2019-12-26 10:47:07,050 TestEpoch-105000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:47:19,618 TestEpoch-105000 INFO: Acc compute finishied.
+2019-12-26 10:47:19,619 TestEpoch-105000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:47:19,620 TestEpoch-105000 INFO: NM: 95.347,	BG: 87.439,	CL: 70.479
+2019-12-26 10:47:19,620 TestEpoch-105000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:47:19,620 TestEpoch-105000 INFO: NM: 94.891,	BG: 86.374,	CL: 68.836
+2019-12-26 10:47:19,620 TestEpoch-105000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:47:19,621 TestEpoch-105000 INFO: NM:[91.6, 97.0, 98.7, 96.9, 93.5, 91.0, 94.7, 97.5, 98.0, 96.4, 88.5]
+2019-12-26 10:47:19,621 TestEpoch-105000 INFO: BG:[84.5, 89.9, 92.6, 89.7, 82.4, 77.1, 81.1, 88.6, 93.0, 91.6, 79.6]
+2019-12-26 10:47:19,621 TestEpoch-105000 INFO: CL:[64.1, 74.0, 79.8, 74.9, 69.4, 66.8, 69.3, 71.8, 71.3, 65.8, 50.0]
+2019-12-26 10:47:21,212 TestEpoch-110000 INFO: Testing logger setup finished
+2019-12-26 10:47:21,212 TestEpoch-110000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:47:21,212 TestEpoch-110000 INFO: Be advised we used model of iteration 110000
+2019-12-26 10:47:28,927 TestEpoch-110000 INFO: Testing starts.
+2019-12-26 10:47:55,162 TestEpoch-110000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:48:06,087 TestEpoch-110000 INFO: Acc compute finishied.
+2019-12-26 10:48:06,088 TestEpoch-110000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:48:06,089 TestEpoch-110000 INFO: NM: 95.355,	BG: 87.514,	CL: 70.512
+2019-12-26 10:48:06,090 TestEpoch-110000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:48:06,091 TestEpoch-110000 INFO: NM: 94.900,	BG: 86.447,	CL: 68.864
+2019-12-26 10:48:06,091 TestEpoch-110000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:48:06,092 TestEpoch-110000 INFO: NM:[91.7, 97.0, 98.7, 96.9, 93.6, 90.9, 94.7, 97.5, 98.0, 96.4, 88.5]
+2019-12-26 10:48:06,093 TestEpoch-110000 INFO: BG:[84.4, 90.0, 92.6, 89.7, 82.5, 77.1, 81.4, 88.7, 93.1, 91.9, 79.5]
+2019-12-26 10:48:06,093 TestEpoch-110000 INFO: CL:[64.0, 74.0, 79.7, 75.1, 69.4, 66.8, 69.4, 71.8, 71.3, 65.7, 50.3]
+2019-12-26 10:48:07,550 TestEpoch-115000 INFO: Testing logger setup finished
+2019-12-26 10:48:07,550 TestEpoch-115000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:48:07,551 TestEpoch-115000 INFO: Be advised we used model of iteration 115000
+2019-12-26 10:48:15,490 TestEpoch-115000 INFO: Testing starts.
+2019-12-26 10:48:41,358 TestEpoch-115000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:48:53,026 TestEpoch-115000 INFO: Acc compute finishied.
+2019-12-26 10:48:53,028 TestEpoch-115000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:48:53,029 TestEpoch-115000 INFO: NM: 95.347,	BG: 87.472,	CL: 70.479
+2019-12-26 10:48:53,029 TestEpoch-115000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:48:53,030 TestEpoch-115000 INFO: NM: 94.891,	BG: 86.410,	CL: 68.836
+2019-12-26 10:48:53,031 TestEpoch-115000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:48:53,031 TestEpoch-115000 INFO: NM:[91.6, 97.0, 98.7, 96.9, 93.5, 91.0, 94.7, 97.5, 98.0, 96.4, 88.5]
+2019-12-26 10:48:53,032 TestEpoch-115000 INFO: BG:[84.4, 89.9, 92.7, 89.6, 82.4, 77.1, 81.3, 88.7, 93.0, 91.7, 79.7]
+2019-12-26 10:48:53,033 TestEpoch-115000 INFO: CL:[64.3, 73.9, 79.7, 75.0, 69.5, 66.9, 69.2, 71.8, 71.2, 65.8, 49.9]
+2019-12-26 10:48:54,466 TestEpoch-120000 INFO: Testing logger setup finished
+2019-12-26 10:48:54,466 TestEpoch-120000 INFO: Merged settings from file configs/train_256_full.yml
+2019-12-26 10:48:54,467 TestEpoch-120000 INFO: Be advised we used model of iteration 120000
+2019-12-26 10:49:01,907 TestEpoch-120000 INFO: Testing starts.
+2019-12-26 10:49:26,721 TestEpoch-120000 INFO: Feature retrival finished, about to compute acc.
+2019-12-26 10:49:35,904 TestEpoch-120000 INFO: Acc compute finishied.
+2019-12-26 10:49:35,905 TestEpoch-120000 INFO: ===Rank-1 (Include identical-view cases)===
+2019-12-26 10:49:35,905 TestEpoch-120000 INFO: NM: 95.339,	BG: 87.472,	CL: 70.521
+2019-12-26 10:49:35,905 TestEpoch-120000 INFO: ===Rank-1 (Exclude identical-view cases)===
+2019-12-26 10:49:35,906 TestEpoch-120000 INFO: NM: 94.882,	BG: 86.411,	CL: 68.873
+2019-12-26 10:49:35,906 TestEpoch-120000 INFO: ===Rank-1 of each angle (Exclude identical-view cases)===
+2019-12-26 10:49:35,906 TestEpoch-120000 INFO: NM:[91.6, 97.0, 98.7, 96.9, 93.7, 91.0, 94.6, 97.5, 98.0, 96.4, 88.3]
+2019-12-26 10:49:35,906 TestEpoch-120000 INFO: BG:[84.4, 89.9, 92.8, 89.6, 82.5, 77.1, 81.2, 88.7, 92.8, 92.0, 79.5]
+2019-12-26 10:49:35,906 TestEpoch-120000 INFO: CL:[63.9, 73.8, 79.8, 75.2, 69.5, 66.8, 69.3, 72.1, 71.2, 65.8, 50.2]
