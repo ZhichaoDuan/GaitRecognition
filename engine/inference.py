@@ -41,7 +41,7 @@ def do_test(model, cfg, test_loader):
         if not cfg.MODEL.BNNECK:
             feature_ = model(data, batch_frames)
         else:
-            feature_, _, _ = model(data, batch_frames)
+            _, _, feature_ = model(data, batch_frames)
 
         n, num_bins, _ = feature_.size()
         features.append(feature_.view(n, -1).data.cpu().numpy())
@@ -75,7 +75,7 @@ def do_test(model, cfg, test_loader):
                 if not cfg.MODEL.BNNECK:
                     dist = compute_euclidean_dist(probe_x, gallery_x)
                 else:
-                    dist = compute_euclidean_dist(probe_x, gallery_x)
+                    dist = compute_cosine_dist(probe_x, gallery_x)
                 idx = np.argsort(dist, axis=1)
                 acc[ps_idx, v1, v2, :] = np.round(np.sum(np.cumsum(np.expand_dims(probe_y, -1) == gallery_y[idx[:, :cfg.TEST.NUM_RANKS]], 1) > 0, 0) * 100 / dist.shape[0], 2)
     

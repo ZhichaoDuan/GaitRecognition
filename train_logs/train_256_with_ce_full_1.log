@@ -1,0 +1,614 @@
+2019-12-27 01:24:24,868 logger INFO: Training logger setup finished
+2019-12-27 01:24:24,868 logger INFO: Namespace(config_file='configs/train_256_with_ce_full_triplet_1.yml', opts=[])
+2019-12-27 01:24:24,868 logger INFO: Merged settings from file configs/train_256_with_ce_full_triplet_1.yml
+2019-12-27 01:24:24,868 logger INFO: 
+PATH:
+  EXPERIMENT_DIR: train_256_with_ce_full_1
+MODEL:
+  BNNECK: True
+  DEVICE_ID: "'4,5'"
+  CE_DIVIDED: 1
+TEST:
+  TEST_ITER: 50000
+
+2019-12-27 01:24:24,869 logger INFO: Running with config:
+DATASET:
+  BOUNDARY: 73
+  DATASET_DIR: /home1/gmf/dzc/GaitDatasetB-silh-processed
+  NUM_WORKERS: 8
+  RESOLUTION: 64
+  SHUFFLE: False
+LOGGER:
+  FORMAT: %(asctime)s %(name)s %(levelname)s: %(message)s
+  LEVEL: DEBUG
+  NAME: logger
+  WRITE_TO_FILE: True
+MODEL:
+  ACTIVATION: leaky_relu
+  BNNECK: True
+  CE_DIVIDED: 1
+  DEVICE: cuda
+  DEVICE_ID: 4,5
+  NAME: SetNet
+  NUM_FEATURES: 256
+PATH:
+  CHECKPOINT_DIR: checkpoints
+  EXPERIMENT_DIR: train_256_with_ce_full_1
+  LOG_STORE_DIR: logs
+  OUTPUT_DIR: /home1/dzc/experiments/gait_recognition
+  SPLIT_RECORD_DIR: partition
+SOLVER:
+  BASE_LR: 0.0001
+  BIAS_LR_FACTOR: 2
+  MILESTONES: [40000, 70000, 100000]
+  MOMENTUM: 0.9
+  OPTIMIZER_NAME: Adam
+  WARMUP_ITERS: 1000
+  WEIGHT_DECAY: 0.0005
+  WEIGHT_DECAY_BIAS: 0.0
+TEST:
+  BATCH_SIZE: 16
+  CACHE: False
+  NUM_RANKS: 5
+  TEST_ITER: 50000
+TRAIN:
+  BATCH_SIZE: (8, 16)
+  CACHE: True
+  DISPLAY_INFO_STEP: 2500
+  FRAME_NUM: 30
+  MAX_ITERS: 130000
+  RECORD_STEP: 5000
+  RESTORE_FROM_ITER: 0
+TRIPLET_LOSS:
+  MARGIN: 0.2
+  TYPE: full
+2019-12-27 01:31:20,142 logger INFO: Training starts.
+2019-12-27 01:31:26,869 logger INFO: No structure file detected, serialize structure of model and optimizer into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/structure.pt
+2019-12-27 01:31:26,922 logger INFO: Entering training loop now.
+2019-12-27 01:46:56,064 logger INFO: Iteration 2500
+2019-12-27 01:46:56,103 logger INFO: Hard triplet loss value is 0.42132
+2019-12-27 01:46:56,114 logger INFO: Full triplet loss value is 0.17201
+2019-12-27 01:46:56,115 logger INFO: Number of positive full loss entries is 147679.98438
+2019-12-27 01:46:56,116 logger INFO: Mean dist is 0.38744
+2019-12-27 01:46:56,116 logger INFO: Current learning rate is 0.00010
+2019-12-27 01:46:56,117 logger INFO: Current triplet loss type is full
+2019-12-27 01:46:56,296 logger INFO: Current full triplet loss value is 0.14769
+2019-12-27 01:46:56,296 logger INFO: Current cross-entropy loss is 2.01496
+2019-12-27 01:46:56,318 logger INFO: Estimated time of finish is 12 hours 38 mins 14 secs.
+2019-12-27 02:02:05,733 logger INFO: saving weight file of iteration 5000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_5000.pt
+2019-12-27 02:02:06,045 logger INFO: Iteration 5000
+2019-12-27 02:02:06,046 logger INFO: Hard triplet loss value is 0.46492
+2019-12-27 02:02:06,047 logger INFO: Full triplet loss value is 0.14995
+2019-12-27 02:02:06,047 logger INFO: Number of positive full loss entries is 73952.66406
+2019-12-27 02:02:06,048 logger INFO: Mean dist is 0.84572
+2019-12-27 02:02:06,048 logger INFO: Current learning rate is 0.00010
+2019-12-27 02:02:06,048 logger INFO: Current triplet loss type is full
+2019-12-27 02:02:06,048 logger INFO: Current full triplet loss value is 0.16121
+2019-12-27 02:02:06,049 logger INFO: Current cross-entropy loss is 1.05719
+2019-12-27 02:02:06,068 logger INFO: Estimated time of finish is 11 hours 34 mins 16 secs.
+2019-12-27 02:17:14,035 logger INFO: Iteration 7500
+2019-12-27 02:17:14,037 logger INFO: Hard triplet loss value is 0.47536
+2019-12-27 02:17:14,038 logger INFO: Full triplet loss value is 0.15541
+2019-12-27 02:17:14,039 logger INFO: Number of positive full loss entries is 49645.23828
+2019-12-27 02:17:14,040 logger INFO: Mean dist is 1.13801
+2019-12-27 02:17:14,040 logger INFO: Current learning rate is 0.00010
+2019-12-27 02:17:14,040 logger INFO: Current triplet loss type is full
+2019-12-27 02:17:14,273 logger INFO: Current full triplet loss value is 0.16529
+2019-12-27 02:17:14,274 logger INFO: Current cross-entropy loss is 0.64574
+2019-12-27 02:17:14,296 logger INFO: Estimated time of finish is 12 hours 17 mins 34 secs.
+2019-12-27 02:32:24,522 logger INFO: saving weight file of iteration 10000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_10000.pt
+2019-12-27 02:32:24,825 logger INFO: Iteration 10000
+2019-12-27 02:32:24,826 logger INFO: Hard triplet loss value is 0.47379
+2019-12-27 02:32:24,827 logger INFO: Full triplet loss value is 0.16061
+2019-12-27 02:32:24,828 logger INFO: Number of positive full loss entries is 36502.52344
+2019-12-27 02:32:24,829 logger INFO: Mean dist is 1.36126
+2019-12-27 02:32:24,829 logger INFO: Current learning rate is 0.00010
+2019-12-27 02:32:24,829 logger INFO: Current triplet loss type is full
+2019-12-27 02:32:24,829 logger INFO: Current full triplet loss value is 0.15695
+2019-12-27 02:32:24,829 logger INFO: Current cross-entropy loss is 0.45244
+2019-12-27 02:32:24,857 logger INFO: Estimated time of finish is 11 hours 28 mins 35 secs.
+2019-12-27 02:47:37,317 logger INFO: Iteration 12500
+2019-12-27 02:47:37,361 logger INFO: Hard triplet loss value is 0.46719
+2019-12-27 02:47:37,364 logger INFO: Full triplet loss value is 0.16372
+2019-12-27 02:47:37,365 logger INFO: Number of positive full loss entries is 28826.25586
+2019-12-27 02:47:37,367 logger INFO: Mean dist is 1.53886
+2019-12-27 02:47:37,367 logger INFO: Current learning rate is 0.00010
+2019-12-27 02:47:37,367 logger INFO: Current triplet loss type is full
+2019-12-27 02:47:37,562 logger INFO: Current full triplet loss value is 0.16655
+2019-12-27 02:47:37,563 logger INFO: Current cross-entropy loss is 0.32339
+2019-12-27 02:47:37,745 logger INFO: Estimated time of finish is 11 hours 5 mins 17 secs.
+2019-12-27 03:02:46,819 logger INFO: saving weight file of iteration 15000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_15000.pt
+2019-12-27 03:02:47,124 logger INFO: Iteration 15000
+2019-12-27 03:02:47,125 logger INFO: Hard triplet loss value is 0.45403
+2019-12-27 03:02:47,126 logger INFO: Full triplet loss value is 0.16551
+2019-12-27 03:02:47,127 logger INFO: Number of positive full loss entries is 23374.41602
+2019-12-27 03:02:47,128 logger INFO: Mean dist is 1.69083
+2019-12-27 03:02:47,128 logger INFO: Current learning rate is 0.00010
+2019-12-27 03:02:47,128 logger INFO: Current triplet loss type is full
+2019-12-27 03:02:47,128 logger INFO: Current full triplet loss value is 0.17018
+2019-12-27 03:02:47,128 logger INFO: Current cross-entropy loss is 0.41348
+2019-12-27 03:02:47,151 logger INFO: Estimated time of finish is 11 hours 3 mins 11 secs.
+2019-12-27 03:17:58,158 logger INFO: Iteration 17500
+2019-12-27 03:17:58,160 logger INFO: Hard triplet loss value is 0.43891
+2019-12-27 03:17:58,161 logger INFO: Full triplet loss value is 0.16675
+2019-12-27 03:17:58,162 logger INFO: Number of positive full loss entries is 19371.72070
+2019-12-27 03:17:58,163 logger INFO: Mean dist is 1.82502
+2019-12-27 03:17:58,163 logger INFO: Current learning rate is 0.00010
+2019-12-27 03:17:58,163 logger INFO: Current triplet loss type is full
+2019-12-27 03:17:58,404 logger INFO: Current full triplet loss value is 0.16294
+2019-12-27 03:17:58,404 logger INFO: Current cross-entropy loss is 0.22828
+2019-12-27 03:17:58,423 logger INFO: Estimated time of finish is 10 hours 40 mins 44 secs.
+2019-12-27 03:33:26,071 logger INFO: saving weight file of iteration 20000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_20000.pt
+2019-12-27 03:33:26,375 logger INFO: Iteration 20000
+2019-12-27 03:33:26,428 logger INFO: Hard triplet loss value is 0.42143
+2019-12-27 03:33:26,435 logger INFO: Full triplet loss value is 0.16774
+2019-12-27 03:33:26,438 logger INFO: Number of positive full loss entries is 16123.54688
+2019-12-27 03:33:26,440 logger INFO: Mean dist is 1.95540
+2019-12-27 03:33:26,440 logger INFO: Current learning rate is 0.00010
+2019-12-27 03:33:26,440 logger INFO: Current triplet loss type is full
+2019-12-27 03:33:26,441 logger INFO: Current full triplet loss value is 0.16412
+2019-12-27 03:33:26,444 logger INFO: Current cross-entropy loss is 0.27298
+2019-12-27 03:33:27,879 logger INFO: Estimated time of finish is 10 hours 19 mins 10 secs.
+2019-12-27 03:48:32,887 logger INFO: Iteration 22500
+2019-12-27 03:48:32,889 logger INFO: Hard triplet loss value is 0.40486
+2019-12-27 03:48:32,890 logger INFO: Full triplet loss value is 0.16861
+2019-12-27 03:48:32,891 logger INFO: Number of positive full loss entries is 13655.74707
+2019-12-27 03:48:32,892 logger INFO: Mean dist is 2.07408
+2019-12-27 03:48:32,892 logger INFO: Current learning rate is 0.00010
+2019-12-27 03:48:32,892 logger INFO: Current triplet loss type is full
+2019-12-27 03:48:33,134 logger INFO: Current full triplet loss value is 0.15733
+2019-12-27 03:48:33,134 logger INFO: Current cross-entropy loss is 0.21281
+2019-12-27 03:48:33,164 logger INFO: Estimated time of finish is 10 hours 4 mins 45 secs.
+2019-12-27 04:03:41,255 logger INFO: saving weight file of iteration 25000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_25000.pt
+2019-12-27 04:03:41,551 logger INFO: Iteration 25000
+2019-12-27 04:03:41,552 logger INFO: Hard triplet loss value is 0.38762
+2019-12-27 04:03:41,553 logger INFO: Full triplet loss value is 0.16944
+2019-12-27 04:03:41,554 logger INFO: Number of positive full loss entries is 11726.05957
+2019-12-27 04:03:41,554 logger INFO: Mean dist is 2.18385
+2019-12-27 04:03:41,554 logger INFO: Current learning rate is 0.00010
+2019-12-27 04:03:41,555 logger INFO: Current triplet loss type is full
+2019-12-27 04:03:41,555 logger INFO: Current full triplet loss value is 0.16315
+2019-12-27 04:03:41,555 logger INFO: Current cross-entropy loss is 0.22035
+2019-12-27 04:03:41,576 logger INFO: Estimated time of finish is 10 hours 10 mins 45 secs.
+2019-12-27 04:18:53,496 logger INFO: Iteration 27500
+2019-12-27 04:18:53,497 logger INFO: Hard triplet loss value is 0.37135
+2019-12-27 04:18:53,498 logger INFO: Full triplet loss value is 0.16998
+2019-12-27 04:18:53,499 logger INFO: Number of positive full loss entries is 10248.09766
+2019-12-27 04:18:53,499 logger INFO: Mean dist is 2.28125
+2019-12-27 04:18:53,499 logger INFO: Current learning rate is 0.00010
+2019-12-27 04:18:53,499 logger INFO: Current triplet loss type is full
+2019-12-27 04:18:53,744 logger INFO: Current full triplet loss value is 0.16343
+2019-12-27 04:18:53,744 logger INFO: Current cross-entropy loss is 0.24422
+2019-12-27 04:18:53,763 logger INFO: Estimated time of finish is 9 hours 53 mins 51 secs.
+2019-12-27 04:34:03,885 logger INFO: saving weight file of iteration 30000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_30000.pt
+2019-12-27 04:34:04,175 logger INFO: Iteration 30000
+2019-12-27 04:34:04,176 logger INFO: Hard triplet loss value is 0.35536
+2019-12-27 04:34:04,178 logger INFO: Full triplet loss value is 0.17049
+2019-12-27 04:34:04,179 logger INFO: Number of positive full loss entries is 8966.61035
+2019-12-27 04:34:04,179 logger INFO: Mean dist is 2.37580
+2019-12-27 04:34:04,179 logger INFO: Current learning rate is 0.00010
+2019-12-27 04:34:04,179 logger INFO: Current triplet loss type is full
+2019-12-27 04:34:04,180 logger INFO: Current full triplet loss value is 0.17148
+2019-12-27 04:34:04,180 logger INFO: Current cross-entropy loss is 0.20387
+2019-12-27 04:34:04,199 logger INFO: Estimated time of finish is 9 hours 26 mins 9 secs.
+2019-12-27 04:49:13,361 logger INFO: Iteration 32500
+2019-12-27 04:49:13,364 logger INFO: Hard triplet loss value is 0.34153
+2019-12-27 04:49:13,365 logger INFO: Full triplet loss value is 0.17097
+2019-12-27 04:49:13,366 logger INFO: Number of positive full loss entries is 8046.75830
+2019-12-27 04:49:13,367 logger INFO: Mean dist is 2.45912
+2019-12-27 04:49:13,367 logger INFO: Current learning rate is 0.00010
+2019-12-27 04:49:13,368 logger INFO: Current triplet loss type is full
+2019-12-27 04:49:13,607 logger INFO: Current full triplet loss value is 0.17382
+2019-12-27 04:49:13,608 logger INFO: Current cross-entropy loss is 0.18704
+2019-12-27 04:49:13,638 logger INFO: Estimated time of finish is 9 hours 24 mins 51 secs.
+2019-12-27 05:04:23,780 logger INFO: saving weight file of iteration 35000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_35000.pt
+2019-12-27 05:04:24,077 logger INFO: Iteration 35000
+2019-12-27 05:04:24,078 logger INFO: Hard triplet loss value is 0.32752
+2019-12-27 05:04:24,079 logger INFO: Full triplet loss value is 0.17148
+2019-12-27 05:04:24,080 logger INFO: Number of positive full loss entries is 7189.13770
+2019-12-27 05:04:24,080 logger INFO: Mean dist is 2.54284
+2019-12-27 05:04:24,080 logger INFO: Current learning rate is 0.00010
+2019-12-27 05:04:24,080 logger INFO: Current triplet loss type is full
+2019-12-27 05:04:24,081 logger INFO: Current full triplet loss value is 0.17594
+2019-12-27 05:04:24,081 logger INFO: Current cross-entropy loss is 0.20708
+2019-12-27 05:04:24,102 logger INFO: Estimated time of finish is 9 hours 17 mins 30 secs.
+2019-12-27 05:19:30,450 logger INFO: Iteration 37500
+2019-12-27 05:19:30,453 logger INFO: Hard triplet loss value is 0.31497
+2019-12-27 05:19:30,454 logger INFO: Full triplet loss value is 0.17188
+2019-12-27 05:19:30,455 logger INFO: Number of positive full loss entries is 6540.85840
+2019-12-27 05:19:30,456 logger INFO: Mean dist is 2.61928
+2019-12-27 05:19:30,456 logger INFO: Current learning rate is 0.00010
+2019-12-27 05:19:30,456 logger INFO: Current triplet loss type is full
+2019-12-27 05:19:30,684 logger INFO: Current full triplet loss value is 0.18652
+2019-12-27 05:19:30,684 logger INFO: Current cross-entropy loss is 0.19966
+2019-12-27 05:19:30,723 logger INFO: Estimated time of finish is 8 hours 36 mins 39 secs.
+2019-12-27 05:34:06,542 logger INFO: saving weight file of iteration 40000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_40000.pt
+2019-12-27 05:34:06,831 logger INFO: Iteration 40000
+2019-12-27 05:34:06,833 logger INFO: Hard triplet loss value is 0.30524
+2019-12-27 05:34:06,833 logger INFO: Full triplet loss value is 0.17231
+2019-12-27 05:34:06,834 logger INFO: Number of positive full loss entries is 6054.94189
+2019-12-27 05:34:06,834 logger INFO: Mean dist is 2.68621
+2019-12-27 05:34:06,834 logger INFO: Current learning rate is 0.00001
+2019-12-27 05:34:06,835 logger INFO: Current triplet loss type is full
+2019-12-27 05:34:06,835 logger INFO: Current full triplet loss value is 0.16798
+2019-12-27 05:34:06,835 logger INFO: Current cross-entropy loss is 0.17262
+2019-12-27 05:34:06,851 logger INFO: Estimated time of finish is 8 hours 21 mins 23 secs.
+2019-12-27 05:48:41,951 logger INFO: Iteration 42500
+2019-12-27 05:48:41,953 logger INFO: Hard triplet loss value is 0.27864
+2019-12-27 05:48:41,954 logger INFO: Full triplet loss value is 0.16630
+2019-12-27 05:48:41,955 logger INFO: Number of positive full loss entries is 5283.03662
+2019-12-27 05:48:41,955 logger INFO: Mean dist is 2.71903
+2019-12-27 05:48:41,956 logger INFO: Current learning rate is 0.00001
+2019-12-27 05:48:41,956 logger INFO: Current triplet loss type is full
+2019-12-27 05:48:42,190 logger INFO: Current full triplet loss value is 0.17251
+2019-12-27 05:48:42,191 logger INFO: Current cross-entropy loss is 0.13499
+2019-12-27 05:48:42,209 logger INFO: Estimated time of finish is 7 hours 59 mins 53 secs.
+2019-12-27 06:03:17,896 logger INFO: saving weight file of iteration 45000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_45000.pt
+2019-12-27 06:03:18,193 logger INFO: Iteration 45000
+2019-12-27 06:03:18,194 logger INFO: Hard triplet loss value is 0.27128
+2019-12-27 06:03:18,195 logger INFO: Full triplet loss value is 0.16492
+2019-12-27 06:03:18,195 logger INFO: Number of positive full loss entries is 5046.91846
+2019-12-27 06:03:18,196 logger INFO: Mean dist is 2.73328
+2019-12-27 06:03:18,196 logger INFO: Current learning rate is 0.00001
+2019-12-27 06:03:18,196 logger INFO: Current triplet loss type is full
+2019-12-27 06:03:18,196 logger INFO: Current full triplet loss value is 0.17046
+2019-12-27 06:03:18,197 logger INFO: Current cross-entropy loss is 0.12448
+2019-12-27 06:03:18,220 logger INFO: Estimated time of finish is 7 hours 48 mins 15 secs.
+2019-12-27 06:17:53,704 logger INFO: Iteration 47500
+2019-12-27 06:17:53,708 logger INFO: Hard triplet loss value is 0.27202
+2019-12-27 06:17:53,709 logger INFO: Full triplet loss value is 0.16480
+2019-12-27 06:17:53,709 logger INFO: Number of positive full loss entries is 5095.36865
+2019-12-27 06:17:53,710 logger INFO: Mean dist is 2.73505
+2019-12-27 06:17:53,710 logger INFO: Current learning rate is 0.00001
+2019-12-27 06:17:53,710 logger INFO: Current triplet loss type is full
+2019-12-27 06:17:53,943 logger INFO: Current full triplet loss value is 0.15659
+2019-12-27 06:17:53,943 logger INFO: Current cross-entropy loss is 0.13365
+2019-12-27 06:17:53,963 logger INFO: Estimated time of finish is 7 hours 35 mins 22 secs.
+2019-12-27 06:32:28,917 logger INFO: saving weight file of iteration 50000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_50000.pt
+2019-12-27 06:32:29,206 logger INFO: Iteration 50000
+2019-12-27 06:32:29,208 logger INFO: Hard triplet loss value is 0.26882
+2019-12-27 06:32:29,208 logger INFO: Full triplet loss value is 0.16423
+2019-12-27 06:32:29,209 logger INFO: Number of positive full loss entries is 5001.43994
+2019-12-27 06:32:29,210 logger INFO: Mean dist is 2.74240
+2019-12-27 06:32:29,210 logger INFO: Current learning rate is 0.00001
+2019-12-27 06:32:29,210 logger INFO: Current triplet loss type is full
+2019-12-27 06:32:29,210 logger INFO: Current full triplet loss value is 0.16613
+2019-12-27 06:32:29,210 logger INFO: Current cross-entropy loss is 0.13549
+2019-12-27 06:32:29,226 logger INFO: Estimated time of finish is 7 hours 21 mins 15 secs.
+2019-12-27 06:47:03,916 logger INFO: Iteration 52500
+2019-12-27 06:47:03,918 logger INFO: Hard triplet loss value is 0.26734
+2019-12-27 06:47:03,919 logger INFO: Full triplet loss value is 0.16410
+2019-12-27 06:47:03,919 logger INFO: Number of positive full loss entries is 4949.49707
+2019-12-27 06:47:03,920 logger INFO: Mean dist is 2.74536
+2019-12-27 06:47:03,920 logger INFO: Current learning rate is 0.00001
+2019-12-27 06:47:03,920 logger INFO: Current triplet loss type is full
+2019-12-27 06:47:04,154 logger INFO: Current full triplet loss value is 0.16169
+2019-12-27 06:47:04,154 logger INFO: Current cross-entropy loss is 0.14731
+2019-12-27 06:47:04,173 logger INFO: Estimated time of finish is 7 hours 9 mins 51 secs.
+2019-12-27 07:01:39,105 logger INFO: saving weight file of iteration 55000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_55000.pt
+2019-12-27 07:01:39,389 logger INFO: Iteration 55000
+2019-12-27 07:01:39,390 logger INFO: Hard triplet loss value is 0.26412
+2019-12-27 07:01:39,391 logger INFO: Full triplet loss value is 0.16369
+2019-12-27 07:01:39,391 logger INFO: Number of positive full loss entries is 4845.34863
+2019-12-27 07:01:39,392 logger INFO: Mean dist is 2.75589
+2019-12-27 07:01:39,392 logger INFO: Current learning rate is 0.00001
+2019-12-27 07:01:39,392 logger INFO: Current triplet loss type is full
+2019-12-27 07:01:39,392 logger INFO: Current full triplet loss value is 0.16250
+2019-12-27 07:01:39,392 logger INFO: Current cross-entropy loss is 0.14769
+2019-12-27 07:01:39,411 logger INFO: Estimated time of finish is 6 hours 59 mins 33 secs.
+2019-12-27 07:16:13,942 logger INFO: Iteration 57500
+2019-12-27 07:16:13,944 logger INFO: Hard triplet loss value is 0.26254
+2019-12-27 07:16:13,944 logger INFO: Full triplet loss value is 0.16357
+2019-12-27 07:16:13,945 logger INFO: Number of positive full loss entries is 4815.42285
+2019-12-27 07:16:13,946 logger INFO: Mean dist is 2.76214
+2019-12-27 07:16:13,946 logger INFO: Current learning rate is 0.00001
+2019-12-27 07:16:13,946 logger INFO: Current triplet loss type is full
+2019-12-27 07:16:14,183 logger INFO: Current full triplet loss value is 0.16124
+2019-12-27 07:16:14,183 logger INFO: Current cross-entropy loss is 0.15004
+2019-12-27 07:16:14,201 logger INFO: Estimated time of finish is 6 hours 36 mins 46 secs.
+2019-12-27 07:30:50,128 logger INFO: saving weight file of iteration 60000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_60000.pt
+2019-12-27 07:30:50,408 logger INFO: Iteration 60000
+2019-12-27 07:30:50,409 logger INFO: Hard triplet loss value is 0.26122
+2019-12-27 07:30:50,410 logger INFO: Full triplet loss value is 0.16347
+2019-12-27 07:30:50,410 logger INFO: Number of positive full loss entries is 4767.50537
+2019-12-27 07:30:50,411 logger INFO: Mean dist is 2.77151
+2019-12-27 07:30:50,411 logger INFO: Current learning rate is 0.00001
+2019-12-27 07:30:50,411 logger INFO: Current triplet loss type is full
+2019-12-27 07:30:50,411 logger INFO: Current full triplet loss value is 0.15230
+2019-12-27 07:30:50,412 logger INFO: Current cross-entropy loss is 0.13335
+2019-12-27 07:30:50,424 logger INFO: Estimated time of finish is 6 hours 41 mins 10 secs.
+2019-12-27 07:45:25,982 logger INFO: Iteration 62500
+2019-12-27 07:45:25,984 logger INFO: Hard triplet loss value is 0.26069
+2019-12-27 07:45:25,985 logger INFO: Full triplet loss value is 0.16373
+2019-12-27 07:45:25,986 logger INFO: Number of positive full loss entries is 4739.75928
+2019-12-27 07:45:25,987 logger INFO: Mean dist is 2.77788
+2019-12-27 07:45:25,987 logger INFO: Current learning rate is 0.00001
+2019-12-27 07:45:25,987 logger INFO: Current triplet loss type is full
+2019-12-27 07:45:26,223 logger INFO: Current full triplet loss value is 0.17797
+2019-12-27 07:45:26,223 logger INFO: Current cross-entropy loss is 0.14244
+2019-12-27 07:45:26,240 logger INFO: Estimated time of finish is 6 hours 8 mins 40 secs.
+2019-12-27 08:00:01,281 logger INFO: saving weight file of iteration 65000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_65000.pt
+2019-12-27 08:00:01,572 logger INFO: Iteration 65000
+2019-12-27 08:00:01,573 logger INFO: Hard triplet loss value is 0.25956
+2019-12-27 08:00:01,574 logger INFO: Full triplet loss value is 0.16370
+2019-12-27 08:00:01,574 logger INFO: Number of positive full loss entries is 4684.43018
+2019-12-27 08:00:01,575 logger INFO: Mean dist is 2.78533
+2019-12-27 08:00:01,575 logger INFO: Current learning rate is 0.00001
+2019-12-27 08:00:01,575 logger INFO: Current triplet loss type is full
+2019-12-27 08:00:01,575 logger INFO: Current full triplet loss value is 0.15106
+2019-12-27 08:00:01,576 logger INFO: Current cross-entropy loss is 0.13944
+2019-12-27 08:00:01,593 logger INFO: Estimated time of finish is 6 hours 0 mins 10 secs.
+2019-12-27 08:14:35,781 logger INFO: Iteration 67500
+2019-12-27 08:14:35,782 logger INFO: Hard triplet loss value is 0.25730
+2019-12-27 08:14:35,783 logger INFO: Full triplet loss value is 0.16350
+2019-12-27 08:14:35,784 logger INFO: Number of positive full loss entries is 4627.08740
+2019-12-27 08:14:35,785 logger INFO: Mean dist is 2.79451
+2019-12-27 08:14:35,785 logger INFO: Current learning rate is 0.00001
+2019-12-27 08:14:35,785 logger INFO: Current triplet loss type is full
+2019-12-27 08:14:36,021 logger INFO: Current full triplet loss value is 0.16749
+2019-12-27 08:14:36,021 logger INFO: Current cross-entropy loss is 0.13067
+2019-12-27 08:14:36,038 logger INFO: Estimated time of finish is 5 hours 50 mins 48 secs.
+2019-12-27 08:29:09,872 logger INFO: saving weight file of iteration 70000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_70000.pt
+2019-12-27 08:29:10,159 logger INFO: Iteration 70000
+2019-12-27 08:29:10,161 logger INFO: Hard triplet loss value is 0.25530
+2019-12-27 08:29:10,161 logger INFO: Full triplet loss value is 0.16326
+2019-12-27 08:29:10,162 logger INFO: Number of positive full loss entries is 4576.07861
+2019-12-27 08:29:10,163 logger INFO: Mean dist is 2.80108
+2019-12-27 08:29:10,163 logger INFO: Current learning rate is 0.00000
+2019-12-27 08:29:10,163 logger INFO: Current triplet loss type is full
+2019-12-27 08:29:10,163 logger INFO: Current full triplet loss value is 0.14215
+2019-12-27 08:29:10,163 logger INFO: Current cross-entropy loss is 0.11902
+2019-12-27 08:29:10,179 logger INFO: Estimated time of finish is 5 hours 33 mins 12 secs.
+2019-12-27 08:43:44,510 logger INFO: Iteration 72500
+2019-12-27 08:43:44,511 logger INFO: Hard triplet loss value is 0.25251
+2019-12-27 08:43:44,512 logger INFO: Full triplet loss value is 0.16259
+2019-12-27 08:43:44,513 logger INFO: Number of positive full loss entries is 4484.50732
+2019-12-27 08:43:44,514 logger INFO: Mean dist is 2.80640
+2019-12-27 08:43:44,514 logger INFO: Current learning rate is 0.00000
+2019-12-27 08:43:44,514 logger INFO: Current triplet loss type is full
+2019-12-27 08:43:44,749 logger INFO: Current full triplet loss value is 0.15234
+2019-12-27 08:43:44,749 logger INFO: Current cross-entropy loss is 0.12801
+2019-12-27 08:43:44,770 logger INFO: Estimated time of finish is 5 hours 15 mins 44 secs.
+2019-12-27 08:58:19,176 logger INFO: saving weight file of iteration 75000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_75000.pt
+2019-12-27 08:58:19,459 logger INFO: Iteration 75000
+2019-12-27 08:58:19,461 logger INFO: Hard triplet loss value is 0.25186
+2019-12-27 08:58:19,461 logger INFO: Full triplet loss value is 0.16253
+2019-12-27 08:58:19,462 logger INFO: Number of positive full loss entries is 4486.30273
+2019-12-27 08:58:19,462 logger INFO: Mean dist is 2.80582
+2019-12-27 08:58:19,463 logger INFO: Current learning rate is 0.00000
+2019-12-27 08:58:19,463 logger INFO: Current triplet loss type is full
+2019-12-27 08:58:19,463 logger INFO: Current full triplet loss value is 0.16652
+2019-12-27 08:58:19,463 logger INFO: Current cross-entropy loss is 0.12252
+2019-12-27 08:58:19,479 logger INFO: Estimated time of finish is 4 hours 55 mins 42 secs.
+2019-12-27 09:12:54,096 logger INFO: Iteration 77500
+2019-12-27 09:12:54,097 logger INFO: Hard triplet loss value is 0.25218
+2019-12-27 09:12:54,098 logger INFO: Full triplet loss value is 0.16267
+2019-12-27 09:12:54,098 logger INFO: Number of positive full loss entries is 4486.84326
+2019-12-27 09:12:54,099 logger INFO: Mean dist is 2.80988
+2019-12-27 09:12:54,099 logger INFO: Current learning rate is 0.00000
+2019-12-27 09:12:54,099 logger INFO: Current triplet loss type is full
+2019-12-27 09:12:54,335 logger INFO: Current full triplet loss value is 0.16114
+2019-12-27 09:12:54,335 logger INFO: Current cross-entropy loss is 0.14216
+2019-12-27 09:12:54,351 logger INFO: Estimated time of finish is 4 hours 42 mins 33 secs.
+2019-12-27 09:27:29,094 logger INFO: saving weight file of iteration 80000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_80000.pt
+2019-12-27 09:27:29,379 logger INFO: Iteration 80000
+2019-12-27 09:27:29,380 logger INFO: Hard triplet loss value is 0.24980
+2019-12-27 09:27:29,381 logger INFO: Full triplet loss value is 0.16211
+2019-12-27 09:27:29,381 logger INFO: Number of positive full loss entries is 4422.55420
+2019-12-27 09:27:29,382 logger INFO: Mean dist is 2.81177
+2019-12-27 09:27:29,382 logger INFO: Current learning rate is 0.00000
+2019-12-27 09:27:29,382 logger INFO: Current triplet loss type is full
+2019-12-27 09:27:29,382 logger INFO: Current full triplet loss value is 0.16536
+2019-12-27 09:27:29,383 logger INFO: Current cross-entropy loss is 0.14175
+2019-12-27 09:27:29,398 logger INFO: Estimated time of finish is 4 hours 45 mins 9 secs.
+2019-12-27 09:42:04,855 logger INFO: Iteration 82500
+2019-12-27 09:42:04,856 logger INFO: Hard triplet loss value is 0.25181
+2019-12-27 09:42:04,857 logger INFO: Full triplet loss value is 0.16255
+2019-12-27 09:42:04,858 logger INFO: Number of positive full loss entries is 4476.35498
+2019-12-27 09:42:04,859 logger INFO: Mean dist is 2.81034
+2019-12-27 09:42:04,859 logger INFO: Current learning rate is 0.00000
+2019-12-27 09:42:04,859 logger INFO: Current triplet loss type is full
+2019-12-27 09:42:05,095 logger INFO: Current full triplet loss value is 0.16622
+2019-12-27 09:42:05,095 logger INFO: Current cross-entropy loss is 0.13066
+2019-12-27 09:42:05,112 logger INFO: Estimated time of finish is 4 hours 24 mins 40 secs.
+2019-12-27 09:56:40,168 logger INFO: saving weight file of iteration 85000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_85000.pt
+2019-12-27 09:56:40,456 logger INFO: Iteration 85000
+2019-12-27 09:56:40,457 logger INFO: Hard triplet loss value is 0.25128
+2019-12-27 09:56:40,458 logger INFO: Full triplet loss value is 0.16235
+2019-12-27 09:56:40,459 logger INFO: Number of positive full loss entries is 4458.67920
+2019-12-27 09:56:40,459 logger INFO: Mean dist is 2.81041
+2019-12-27 09:56:40,459 logger INFO: Current learning rate is 0.00000
+2019-12-27 09:56:40,459 logger INFO: Current triplet loss type is full
+2019-12-27 09:56:40,460 logger INFO: Current full triplet loss value is 0.16436
+2019-12-27 09:56:40,460 logger INFO: Current cross-entropy loss is 0.12977
+2019-12-27 09:56:40,477 logger INFO: Estimated time of finish is 4 hours 4 mins 38 secs.
+2019-12-27 10:11:19,021 logger INFO: Iteration 87500
+2019-12-27 10:11:19,023 logger INFO: Hard triplet loss value is 0.25108
+2019-12-27 10:11:19,023 logger INFO: Full triplet loss value is 0.16249
+2019-12-27 10:11:19,024 logger INFO: Number of positive full loss entries is 4437.27148
+2019-12-27 10:11:19,025 logger INFO: Mean dist is 2.81502
+2019-12-27 10:11:19,025 logger INFO: Current learning rate is 0.00000
+2019-12-27 10:11:19,025 logger INFO: Current triplet loss type is full
+2019-12-27 10:11:19,259 logger INFO: Current full triplet loss value is 0.16730
+2019-12-27 10:11:19,259 logger INFO: Current cross-entropy loss is 0.13902
+2019-12-27 10:11:19,278 logger INFO: Estimated time of finish is 4 hours 2 mins 33 secs.
+2019-12-27 10:25:59,366 logger INFO: saving weight file of iteration 90000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_90000.pt
+2019-12-27 10:25:59,651 logger INFO: Iteration 90000
+2019-12-27 10:25:59,652 logger INFO: Hard triplet loss value is 0.25124
+2019-12-27 10:25:59,653 logger INFO: Full triplet loss value is 0.16246
+2019-12-27 10:25:59,654 logger INFO: Number of positive full loss entries is 4447.47021
+2019-12-27 10:25:59,655 logger INFO: Mean dist is 2.81426
+2019-12-27 10:25:59,655 logger INFO: Current learning rate is 0.00000
+2019-12-27 10:25:59,655 logger INFO: Current triplet loss type is full
+2019-12-27 10:25:59,655 logger INFO: Current full triplet loss value is 0.16382
+2019-12-27 10:25:59,656 logger INFO: Current cross-entropy loss is 0.14628
+2019-12-27 10:25:59,673 logger INFO: Estimated time of finish is 3 hours 41 mins 3 secs.
+2019-12-27 10:40:39,282 logger INFO: Iteration 92500
+2019-12-27 10:40:39,284 logger INFO: Hard triplet loss value is 0.25052
+2019-12-27 10:40:39,284 logger INFO: Full triplet loss value is 0.16245
+2019-12-27 10:40:39,285 logger INFO: Number of positive full loss entries is 4434.05859
+2019-12-27 10:40:39,286 logger INFO: Mean dist is 2.81765
+2019-12-27 10:40:39,286 logger INFO: Current learning rate is 0.00000
+2019-12-27 10:40:39,286 logger INFO: Current triplet loss type is full
+2019-12-27 10:40:39,516 logger INFO: Current full triplet loss value is 0.16099
+2019-12-27 10:40:39,517 logger INFO: Current cross-entropy loss is 0.12038
+2019-12-27 10:40:39,536 logger INFO: Estimated time of finish is 3 hours 37 mins 11 secs.
+2019-12-27 10:55:19,733 logger INFO: saving weight file of iteration 95000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_95000.pt
+2019-12-27 10:55:20,029 logger INFO: Iteration 95000
+2019-12-27 10:55:20,030 logger INFO: Hard triplet loss value is 0.24868
+2019-12-27 10:55:20,031 logger INFO: Full triplet loss value is 0.16212
+2019-12-27 10:55:20,031 logger INFO: Number of positive full loss entries is 4390.92480
+2019-12-27 10:55:20,032 logger INFO: Mean dist is 2.81928
+2019-12-27 10:55:20,032 logger INFO: Current learning rate is 0.00000
+2019-12-27 10:55:20,032 logger INFO: Current triplet loss type is full
+2019-12-27 10:55:20,032 logger INFO: Current full triplet loss value is 0.16831
+2019-12-27 10:55:20,033 logger INFO: Current cross-entropy loss is 0.14023
+2019-12-27 10:55:20,047 logger INFO: Estimated time of finish is 3 hours 9 mins 59 secs.
+2019-12-27 11:10:00,363 logger INFO: Iteration 97500
+2019-12-27 11:10:00,365 logger INFO: Hard triplet loss value is 0.25028
+2019-12-27 11:10:00,366 logger INFO: Full triplet loss value is 0.16240
+2019-12-27 11:10:00,367 logger INFO: Number of positive full loss entries is 4418.66943
+2019-12-27 11:10:00,368 logger INFO: Mean dist is 2.82008
+2019-12-27 11:10:00,368 logger INFO: Current learning rate is 0.00000
+2019-12-27 11:10:00,368 logger INFO: Current triplet loss type is full
+2019-12-27 11:10:00,607 logger INFO: Current full triplet loss value is 0.17335
+2019-12-27 11:10:00,607 logger INFO: Current cross-entropy loss is 0.13095
+2019-12-27 11:10:00,626 logger INFO: Estimated time of finish is 3 hours 4 mins 50 secs.
+2019-12-27 11:24:43,274 logger INFO: saving weight file of iteration 100000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_100000.pt
+2019-12-27 11:24:43,570 logger INFO: Iteration 100000
+2019-12-27 11:24:43,572 logger INFO: Hard triplet loss value is 0.24960
+2019-12-27 11:24:43,573 logger INFO: Full triplet loss value is 0.16233
+2019-12-27 11:24:43,574 logger INFO: Number of positive full loss entries is 4408.31689
+2019-12-27 11:24:43,575 logger INFO: Mean dist is 2.81919
+2019-12-27 11:24:43,575 logger INFO: Current learning rate is 0.00000
+2019-12-27 11:24:43,575 logger INFO: Current triplet loss type is full
+2019-12-27 11:24:43,575 logger INFO: Current full triplet loss value is 0.16955
+2019-12-27 11:24:43,576 logger INFO: Current cross-entropy loss is 0.12929
+2019-12-27 11:24:43,596 logger INFO: Estimated time of finish is 2 hours 46 mins 20 secs.
+2019-12-27 11:39:25,346 logger INFO: Iteration 102500
+2019-12-27 11:39:25,348 logger INFO: Hard triplet loss value is 0.24941
+2019-12-27 11:39:25,349 logger INFO: Full triplet loss value is 0.16238
+2019-12-27 11:39:25,349 logger INFO: Number of positive full loss entries is 4407.30322
+2019-12-27 11:39:25,350 logger INFO: Mean dist is 2.82045
+2019-12-27 11:39:25,350 logger INFO: Current learning rate is 0.00000
+2019-12-27 11:39:25,350 logger INFO: Current triplet loss type is full
+2019-12-27 11:39:25,579 logger INFO: Current full triplet loss value is 0.16187
+2019-12-27 11:39:25,579 logger INFO: Current cross-entropy loss is 0.12707
+2019-12-27 11:39:25,594 logger INFO: Estimated time of finish is 2 hours 36 mins 36 secs.
+2019-12-27 11:54:01,314 logger INFO: saving weight file of iteration 105000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_105000.pt
+2019-12-27 11:54:01,592 logger INFO: Iteration 105000
+2019-12-27 11:54:01,593 logger INFO: Hard triplet loss value is 0.25091
+2019-12-27 11:54:01,594 logger INFO: Full triplet loss value is 0.16243
+2019-12-27 11:54:01,595 logger INFO: Number of positive full loss entries is 4443.82129
+2019-12-27 11:54:01,595 logger INFO: Mean dist is 2.81781
+2019-12-27 11:54:01,595 logger INFO: Current learning rate is 0.00000
+2019-12-27 11:54:01,595 logger INFO: Current triplet loss type is full
+2019-12-27 11:54:01,595 logger INFO: Current full triplet loss value is 0.15857
+2019-12-27 11:54:01,596 logger INFO: Current cross-entropy loss is 0.12612
+2019-12-27 11:54:01,611 logger INFO: Estimated time of finish is 2 hours 19 mins 24 secs.
+2019-12-27 12:08:46,283 logger INFO: Iteration 107500
+2019-12-27 12:08:46,285 logger INFO: Hard triplet loss value is 0.24992
+2019-12-27 12:08:46,286 logger INFO: Full triplet loss value is 0.16219
+2019-12-27 12:08:46,287 logger INFO: Number of positive full loss entries is 4427.13623
+2019-12-27 12:08:46,288 logger INFO: Mean dist is 2.81825
+2019-12-27 12:08:46,288 logger INFO: Current learning rate is 0.00000
+2019-12-27 12:08:46,288 logger INFO: Current triplet loss type is full
+2019-12-27 12:08:46,517 logger INFO: Current full triplet loss value is 0.15888
+2019-12-27 12:08:46,518 logger INFO: Current cross-entropy loss is 0.14726
+2019-12-27 12:08:46,541 logger INFO: Estimated time of finish is 2 hours 15 mins 25 secs.
+2019-12-27 12:23:45,530 logger INFO: saving weight file of iteration 110000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_110000.pt
+2019-12-27 12:23:45,807 logger INFO: Iteration 110000
+2019-12-27 12:23:45,809 logger INFO: Hard triplet loss value is 0.24906
+2019-12-27 12:23:45,810 logger INFO: Full triplet loss value is 0.16232
+2019-12-27 12:23:45,811 logger INFO: Number of positive full loss entries is 4392.12402
+2019-12-27 12:23:45,811 logger INFO: Mean dist is 2.82018
+2019-12-27 12:23:45,811 logger INFO: Current learning rate is 0.00000
+2019-12-27 12:23:45,811 logger INFO: Current triplet loss type is full
+2019-12-27 12:23:45,812 logger INFO: Current full triplet loss value is 0.17135
+2019-12-27 12:23:45,812 logger INFO: Current cross-entropy loss is 0.13326
+2019-12-27 12:23:45,835 logger INFO: Estimated time of finish is 1 hours 59 mins 30 secs.
+2019-12-27 12:38:37,264 logger INFO: Iteration 112500
+2019-12-27 12:38:37,266 logger INFO: Hard triplet loss value is 0.25051
+2019-12-27 12:38:37,267 logger INFO: Full triplet loss value is 0.16225
+2019-12-27 12:38:37,268 logger INFO: Number of positive full loss entries is 4442.83447
+2019-12-27 12:38:37,269 logger INFO: Mean dist is 2.81635
+2019-12-27 12:38:37,269 logger INFO: Current learning rate is 0.00000
+2019-12-27 12:38:37,269 logger INFO: Current triplet loss type is full
+2019-12-27 12:38:37,502 logger INFO: Current full triplet loss value is 0.14840
+2019-12-27 12:38:37,503 logger INFO: Current cross-entropy loss is 0.13036
+2019-12-27 12:38:37,518 logger INFO: Estimated time of finish is 1 hours 37 mins 33 secs.
+2019-12-27 12:53:13,879 logger INFO: saving weight file of iteration 115000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_115000.pt
+2019-12-27 12:53:14,166 logger INFO: Iteration 115000
+2019-12-27 12:53:14,168 logger INFO: Hard triplet loss value is 0.24944
+2019-12-27 12:53:14,168 logger INFO: Full triplet loss value is 0.16246
+2019-12-27 12:53:14,169 logger INFO: Number of positive full loss entries is 4403.95850
+2019-12-27 12:53:14,170 logger INFO: Mean dist is 2.82147
+2019-12-27 12:53:14,170 logger INFO: Current learning rate is 0.00000
+2019-12-27 12:53:14,170 logger INFO: Current triplet loss type is full
+2019-12-27 12:53:14,170 logger INFO: Current full triplet loss value is 0.17069
+2019-12-27 12:53:14,170 logger INFO: Current cross-entropy loss is 0.12683
+2019-12-27 12:53:14,189 logger INFO: Estimated time of finish is 1 hours 19 mins 22 secs.
+2019-12-27 13:12:36,585 logger INFO: Iteration 117500
+2019-12-27 13:12:37,213 logger INFO: Hard triplet loss value is 0.25002
+2019-12-27 13:12:37,219 logger INFO: Full triplet loss value is 0.16221
+2019-12-27 13:12:37,221 logger INFO: Number of positive full loss entries is 4416.47217
+2019-12-27 13:12:37,224 logger INFO: Mean dist is 2.81741
+2019-12-27 13:12:37,224 logger INFO: Current learning rate is 0.00000
+2019-12-27 13:12:37,224 logger INFO: Current triplet loss type is full
+2019-12-27 13:12:37,225 logger INFO: Current full triplet loss value is 0.15302
+2019-12-27 13:12:37,225 logger INFO: Current cross-entropy loss is 0.11729
+2019-12-27 13:12:38,134 logger INFO: Estimated time of finish is 1 hours 8 mins 31 secs.
+2019-12-27 13:27:10,445 logger INFO: saving weight file of iteration 120000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_120000.pt
+2019-12-27 13:27:10,822 logger INFO: Iteration 120000
+2019-12-27 13:27:10,824 logger INFO: Hard triplet loss value is 0.24896
+2019-12-27 13:27:10,825 logger INFO: Full triplet loss value is 0.16207
+2019-12-27 13:27:10,825 logger INFO: Number of positive full loss entries is 4398.15771
+2019-12-27 13:27:10,826 logger INFO: Mean dist is 2.82115
+2019-12-27 13:27:10,826 logger INFO: Current learning rate is 0.00000
+2019-12-27 13:27:10,826 logger INFO: Current triplet loss type is full
+2019-12-27 13:27:10,827 logger INFO: Current full triplet loss value is 0.16593
+2019-12-27 13:27:10,827 logger INFO: Current cross-entropy loss is 0.13206
+2019-12-27 13:27:10,849 logger INFO: Estimated time of finish is 0 hours 54 mins 29 secs.
+2019-12-27 13:41:48,416 logger INFO: Iteration 122500
+2019-12-27 13:41:48,417 logger INFO: Hard triplet loss value is 0.25087
+2019-12-27 13:41:48,418 logger INFO: Full triplet loss value is 0.16240
+2019-12-27 13:41:48,419 logger INFO: Number of positive full loss entries is 4447.30518
+2019-12-27 13:41:48,419 logger INFO: Mean dist is 2.81809
+2019-12-27 13:41:48,419 logger INFO: Current learning rate is 0.00000
+2019-12-27 13:41:48,420 logger INFO: Current triplet loss type is full
+2019-12-27 13:41:48,655 logger INFO: Current full triplet loss value is 0.16479
+2019-12-27 13:41:48,656 logger INFO: Current cross-entropy loss is 0.14730
+2019-12-27 13:41:48,675 logger INFO: Estimated time of finish is 0 hours 41 mins 41 secs.
+2019-12-27 13:56:33,729 logger INFO: saving weight file of iteration 125000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_125000.pt
+2019-12-27 13:56:34,015 logger INFO: Iteration 125000
+2019-12-27 13:56:34,016 logger INFO: Hard triplet loss value is 0.24918
+2019-12-27 13:56:34,017 logger INFO: Full triplet loss value is 0.16219
+2019-12-27 13:56:34,017 logger INFO: Number of positive full loss entries is 4390.85303
+2019-12-27 13:56:34,018 logger INFO: Mean dist is 2.81908
+2019-12-27 13:56:34,018 logger INFO: Current learning rate is 0.00000
+2019-12-27 13:56:34,018 logger INFO: Current triplet loss type is full
+2019-12-27 13:56:34,018 logger INFO: Current full triplet loss value is 0.15767
+2019-12-27 13:56:34,019 logger INFO: Current cross-entropy loss is 0.12356
+2019-12-27 13:56:34,035 logger INFO: Estimated time of finish is 0 hours 29 mins 0 secs.
+2019-12-27 14:11:17,161 logger INFO: Iteration 127500
+2019-12-27 14:11:17,163 logger INFO: Hard triplet loss value is 0.24981
+2019-12-27 14:11:17,163 logger INFO: Full triplet loss value is 0.16259
+2019-12-27 14:11:17,164 logger INFO: Number of positive full loss entries is 4437.14258
+2019-12-27 14:11:17,165 logger INFO: Mean dist is 2.82005
+2019-12-27 14:11:17,165 logger INFO: Current learning rate is 0.00000
+2019-12-27 14:11:17,165 logger INFO: Current triplet loss type is full
+2019-12-27 14:11:17,400 logger INFO: Current full triplet loss value is 0.15796
+2019-12-27 14:11:17,400 logger INFO: Current cross-entropy loss is 0.13062
+2019-12-27 14:11:17,417 logger INFO: Estimated time of finish is 0 hours 13 mins 47 secs.
+2019-12-27 14:25:48,285 logger INFO: saving weight file of iteration 130000 into /home1/dzc/experiments/gait_recognition/train_256_with_ce_full_1/checkpoints/SetNet_130000.pt
+2019-12-27 14:25:48,559 logger INFO: Iteration 130000
+2019-12-27 14:25:48,560 logger INFO: Hard triplet loss value is 0.24919
+2019-12-27 14:25:48,561 logger INFO: Full triplet loss value is 0.16211
+2019-12-27 14:25:48,561 logger INFO: Number of positive full loss entries is 4399.67188
+2019-12-27 14:25:48,562 logger INFO: Mean dist is 2.81777
+2019-12-27 14:25:48,562 logger INFO: Current learning rate is 0.00000
+2019-12-27 14:25:48,562 logger INFO: Current triplet loss type is full
+2019-12-27 14:25:48,562 logger INFO: Current full triplet loss value is 0.15488
+2019-12-27 14:25:48,563 logger INFO: Current cross-entropy loss is 0.13849
+2019-12-27 14:25:48,576 logger INFO: Estimated time of finish is 0 hours 0 mins 0 secs.
+2019-12-27 14:25:48,579 logger INFO: Reaching maximum epochs, break training loop now.

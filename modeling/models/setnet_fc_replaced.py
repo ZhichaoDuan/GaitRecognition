@@ -53,9 +53,7 @@ class SetNet(nn.Module):
             
 
         self.bin_num = [1, 2, 4, 8, 16]
-        self.fc1 = nn.Parameter(
-            nn.init.normal_(torch.zeros(sum(self.bin_num)*2, 128, self.num_features), std=0.001)
-        )
+        self.fc1 = nn.Linear(128, 256)
         self.fc2 = nn.Parameter(
             nn.init.normal_(torch.zeros(sum(self.bin_num)*2, self.num_features, nm_cls), std=0.001)
         )
@@ -69,6 +67,9 @@ class SetNet(nn.Module):
                 if m.affine:
                     nn.init.constant_(m.weight, 1.0)
                     nn.init.constant_(m.bias, 0.0)
+            elif isinstance(m, nn.Linear):
+                nn.init.kaiming_normal_(m.weight, a=0, mode='fan_out')
+                nn.init.constant_(m.bias, 0.0)
 
     def _max(self, x, n, m):
         _, c, h, w = x.size()
@@ -123,10 +124,9 @@ class SetNet(nn.Module):
             z = global_.view(n, c, bin_, -1)
             z = z.mean(3) + z.max(3)[0]
             feature.append(z)
-    
-        feature = torch.cat(feature, 2).permute(2, 0, 1) # num of bins, batch size, num of channels
-        feature = feature.matmul(self.fc1)
-        feature = feature.permute(1, 0, 2) # 128 62 256
+        
+        feature = torch.cat(feature, 2).permute(0, 2, 1)
+        feature = self.fc1(feature)
 
         if self.use_bnneck:
             bs, nm_cnns, ftrs = feature.size()

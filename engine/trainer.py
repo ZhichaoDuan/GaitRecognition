@@ -5,6 +5,7 @@ import torch.nn.functional as F
 import os
 import numpy as np
 import time
+from layers.smooth_ce import CrossEntropyLabelSmooth
 from utils.format_seconds import fmt_secs
 
 def do_train(model, optimizer, cfg, train_loader, scheduler, loss, iteration=0):
@@ -16,8 +17,12 @@ def do_train(model, optimizer, cfg, train_loader, scheduler, loss, iteration=0):
     mean_dist_record = []
     full_loss_nm_record = []
 
-    model = nn.DataParallel(model.float()).cuda()
-    loss = nn.DataParallel(loss.float()).cuda()
+    if torch.cuda.device_count() > 1:
+        model = nn.DataParallel(model.float()).cuda()
+        loss = nn.DataParallel(loss.float()).cuda()
+    elif torch.cuda.device_count() == 1:
+        model = model.float().cuda()
+        loss = loss.float().cuda()
 
     # save the model structure for one time
     f = os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR, cfg.PATH.CHECKPOINT_DIR, 'structure.pt')
@@ -39,7 +44,7 @@ def do_train(model, optimizer, cfg, train_loader, scheduler, loss, iteration=0):
     model.train()
     train_ids = list(set(train_loader.dataset.ids))
     train_ids = sorted(train_ids)
-
+    sce = CrossEntropyLabelSmooth(len(train_ids))
     logger.info('Entering training loop now.')
     for data, views, status, ids in train_loader:
         _start = time.time()
@@ -57,7 +62,8 @@ def do_train(model, optimizer, cfg, train_loader, scheduler, loss, iteration=0):
             cls_ids_gt = ids_gt.unsqueeze(1).repeat(1, neck.size(1))
             cls_ids_gt_flatten = cls_ids_gt.reshape(-1).long().cuda()
             neck = neck.reshape(-1, neck.size(2))
-            cls_loss = F.cross_entropy(neck, cls_ids_gt_flatten)         
+            # cls_loss = F.cross_entropy(neck, cls_ids_gt_flatten)        
+            cls_loss = sce(neck, cls_ids_gt_flatten) 
         else:
             feature = model(data)
         feature = feature.permute(1, 0, 2).contiguous()
@@ -81,7 +87,8 @@ def do_train(model, optimizer, cfg, train_loader, scheduler, loss, iteration=0):
         
         loss_chosen.backward()
         optimizer.step()
-        scheduler.step()
+        if scheduler is not None:
+            scheduler.step()
 
         _end = time.time()
 

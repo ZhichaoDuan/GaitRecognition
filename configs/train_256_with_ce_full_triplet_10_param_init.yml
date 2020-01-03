@@ -1,0 +1,7 @@
+PATH:
+  EXPERIMENT_DIR: train_256_with_ce_full_10_param_init
+MODEL:
+  BNNECK: True
+  DEVICE_ID: "'6,7'"
+TEST:
+  TEST_ITER: 90000

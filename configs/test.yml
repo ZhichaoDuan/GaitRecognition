@@ -1,8 +1,8 @@
 PATH:
   EXPERIMENT_DIR: 'test_new_'
 MODEL:
-  DEVICE_ID: "'2,3'"
+  DEVICE_ID: "('5,6')"
   BNNECK: True
 TRAIN:
-  CACHE: True
+  CACHE: False
   

@@ -15,9 +15,15 @@ def train(cfg):
     os.environ['CUDA_VISIBLE_DEVICES'] = cfg.MODEL.DEVICE_ID
     train_loader = make_data_loader(cfg, 'train')
     model = build_model(cfg, nm_cls=len(list(set(train_loader.dataset.ids))))
-    optimizer = make_optimizer(cfg, model)
-    if cfg.TRAIN.RESTORE_FROM_ITER == 0:
-        scheduler = WarmupMultiStepLR(optimizer, cfg.SOLVER.MILESTONES, warmup_iters=cfg.SOLVER.WARMUP_ITERS, last_epoch=-1)
+    if cfg.SOLVER.OPTIMIZER_MANNER == 'layer-wise':
+        optimizer = make_optimizer(cfg, model)
+    else:
+        import torch.optim as optim
+        optimizer = getattr(optim, cfg.SOLVER.OPTIMIZER_NAME)(model.parameters(), lr=cfg.SOLVER.BASE_LR)
+    if not cfg.TRAIN.USE_SCHEDULER:
+        scheduler = None
+    elif cfg.TRAIN.RESTORE_FROM_ITER == 0:
+        scheduler = WarmupMultiStepLR(optimizer, cfg.SOLVER.MILESTONES, warmup_iters=cfg.SOLVER.WARMUP_ITERS)
     else:
         scheduler = WarmupMultiStepLR(optimizer, cfg.SOLVER.MILESTONES, warmup_iters=cfg.SOLVER.WARMUP_ITERS, last_epoch=cfg.TRAIN.RESTORE_FROM_ITER)
     loss = build_loss(cfg)
