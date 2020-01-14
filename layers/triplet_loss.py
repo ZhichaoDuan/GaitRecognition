@@ -3,9 +3,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class TripletLoss(nn.Module):
-    def __init__(self, cfg):
+    def __init__(self, margin):
         super(TripletLoss, self).__init__()
-        self.margin = cfg.TRIPLET_LOSS.MARGIN
+        self.margin = margin
 
     def forward(self, ftr, label):
         n, m, d = ftr.size()

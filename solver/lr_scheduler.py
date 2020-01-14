@@ -18,6 +18,8 @@ class WarmupMultiStepLR(torch.optim.lr_scheduler._LRScheduler):
         self.milestones = milestones
         self.gamma = gamma
         self.warmup_iters = warmup_iters
+        if last_epoch <= 0:
+            last_epoch = -1
         super(WarmupMultiStepLR, self).__init__(optimizer, last_epoch)
 
     def get_lr(self):
@@ -26,6 +28,7 @@ class WarmupMultiStepLR(torch.optim.lr_scheduler._LRScheduler):
             warmup_factor = self.last_epoch / self.warmup_iters
         return [
             base_lr
+            * warmup_factor
             * self.gamma ** bisect_right(self.milestones, self.last_epoch)
             for base_lr in self.base_lrs
         ]

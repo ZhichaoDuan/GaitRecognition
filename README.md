@@ -31,7 +31,8 @@ Record all the best results I got so far.
 |<font color=black>Baseline with warmup and weight decay</font>|<font color=black>94.918</font>|<font color=black>86.429</font>|<font color=black>68.727</font>|<font color=black></font>|
 |<font color=green> Baseline + BNNeck + neck ftr + cosine dist </font>|<font color=green>96.164</font>|<font color=green>90.306</font>|<font color=green>66.564</font>|<font color=green>ce loss divided by 10, warm up and weight decay added, lr scheduler added, initialization remains unchanged, shift of BN is on, init of fc2 and conv2d is xavier_uniform</font>|
 |<font color=red>Baseline + BNNeck + neck ftr + cosine dist</font>|<font color=red>95.127</font>|<font color=red>90.498</font>|<font color=red>71.827</font>|<font color=red>ce loss divided by 10, no warm up and weight decay, no lr scheduler, used pure Adam, initialization changed, shift of BN is disabled, init of fc2 is normal with std 0.001, init of conv2d is kaiming_normal with a=0 and mode='fan_in', all bias of init module is 0.0, init weight of BN is 1.0</font>|
-|<font color=black></font>|<font color=black></font>|<font color=black></font>|<font color=black></font>|<font color=black></font>|
+
+<!-- |<font color=black></font>|<font color=black></font>|<font color=black></font>|<font color=black></font>|<font color=black></font>| -->
 
 ## Issues
 * If you have no idea how to design your own `collate_fn`, maybe you can check out this [blog](https://www.jianshu.com/p/bb90bff9f6e5)

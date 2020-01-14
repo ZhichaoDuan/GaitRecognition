@@ -1,7 +1,7 @@
 import torch
 import random
 
-class GaitSampler(torch.utils.data.sampler.Sampler):
+class RandomIdentitySampler(torch.utils.data.sampler.Sampler):
     def __init__(self, dataset, batch_size):
         self.dataset = dataset
         self.batch_size = batch_size

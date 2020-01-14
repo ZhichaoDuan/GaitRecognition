@@ -3,39 +3,42 @@ import argparse
 import sys
 sys.path.append('.')
 
+from torch.backends import cudnn
+
 from config import cfg
 from utils.logger import setup_logger
 from data import make_data_loader
 from modeling import build_model
 from solver import make_optimizer, WarmupMultiStepLR
-from layers import build_loss
+from layers import make_loss
 from engine.trainer import do_train
 
 def train(cfg):
-    os.environ['CUDA_VISIBLE_DEVICES'] = cfg.MODEL.DEVICE_ID
-    train_loader = make_data_loader(cfg, 'train')
-    model = build_model(cfg, nm_cls=len(list(set(train_loader.dataset.ids))))
-    if cfg.SOLVER.OPTIMIZER_MANNER == 'layer-wise':
-        optimizer = make_optimizer(cfg, model)
-    else:
-        import torch.optim as optim
-        optimizer = getattr(optim, cfg.SOLVER.OPTIMIZER_NAME)(model.parameters(), lr=cfg.SOLVER.BASE_LR)
-    if not cfg.TRAIN.USE_SCHEDULER:
-        scheduler = None
-    elif cfg.TRAIN.RESTORE_FROM_ITER == 0:
-        scheduler = WarmupMultiStepLR(optimizer, cfg.SOLVER.MILESTONES, warmup_iters=cfg.SOLVER.WARMUP_ITERS)
-    else:
-        scheduler = WarmupMultiStepLR(optimizer, cfg.SOLVER.MILESTONES, warmup_iters=cfg.SOLVER.WARMUP_ITERS, last_epoch=cfg.TRAIN.RESTORE_FROM_ITER)
-    loss = build_loss(cfg)
-    # do_train(model, optimizer, cfg, train_loader, loss, cfg.TRAIN.RESTORE_FROM_ITER)
+    # data loader
+    train_loader, val_loader, num_classes = make_data_loader(cfg)
+    # setup model
+    model = build_model(cfg, num_classes)
+    # make optimizer
+    optimizer = make_optimizer(cfg, model)
+    # make loss
+    loss_fn = make_loss(cfg, num_classes)
+    # change settings can simulate no scheduler mode.
+    scheduler = WarmupMultiStepLR(
+        optimizer=optimizer, 
+        milestones=cfg.SOLVER.MILESTONES, 
+        gamma=cfg.SOLVER.GAMMA,
+        warmup_iters=cfg.SOLVER.WARMUP_ITERS, 
+        last_epoch=cfg.TRAIN.RESTORE_FROM_ITER,
+    )
+    # call core function
     do_train(
-        cfg=cfg,
-        model=model,
-        train_loader=train_loader,
-        optimizer=optimizer,
-        scheduler=scheduler,
-        loss=loss,
-        iteration=cfg.TRAIN.RESTORE_FROM_ITER,
+        cfg,
+        model,
+        train_loader,
+        val_loader,
+        optimizer,
+        scheduler,
+        loss_fn,
     )
 
 def main():
@@ -58,7 +61,6 @@ def main():
     os.makedirs(os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR), exist_ok=True)
     os.makedirs(os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR, cfg.PATH.LOG_STORE_DIR), exist_ok=True)
     os.makedirs(os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR, cfg.PATH.CHECKPOINT_DIR ), exist_ok=True)
-    os.makedirs(os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR, cfg.PATH.SPLIT_RECORD_DIR), exist_ok=True)
 
     logger = setup_logger(cfg)
     logger.info('Training logger setup finished')
@@ -71,6 +73,9 @@ def main():
             logger.info('\n'+cf.read())
     logger.info("Running with config:\n{}".format(cfg))
     
+    if cfg.MODEL.DEVICE == 'cuda':
+        os.environ['CUDA_VISIBLE_DEVICES'] = cfg.MODEL.DEVICE_ID
+        cudnn.benchmark = True
     train(cfg)
     
 if __name__ == "__main__":

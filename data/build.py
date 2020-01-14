@@ -1,13 +1,14 @@
 import os
 import torch
+from torch.utils.data.sampler import SequentialSampler
 import numpy as np
 from .datasets.casia import CASIADataset
-from .batch_sampler import GaitSampler
-from .collate_fn import CollateFn
+from .samplers import RandomIdentitySampler
+from .collate_batch import collate_fn_train, collate_fn_val
 from .transforms import build_transforms
 
 
-def build_dataset(cfg, phase, transform):
+def build_dataset(cfg, train_transform, val_transform):
     seqs_dir = list()
     views = list()
     status = list()
@@ -26,63 +27,49 @@ def build_dataset(cfg, phase, transform):
                     subject_ids.append(_subject_id)
                     status.append(_status)
                     views.append(_view)
-    
-    os.makedirs(os.path.join(
-        cfg.PATH.OUTPUT_DIR,
-        cfg.PATH.EXPERIMENT_DIR,
-        cfg.PATH.SPLIT_RECORD_DIR,
-    ), exist_ok=True)
-    
-    split_record_dir = os.path.join(
-        cfg.PATH.OUTPUT_DIR,
-        cfg.PATH.EXPERIMENT_DIR,
-        cfg.PATH.SPLIT_RECORD_DIR,
-        '{}_{}.npy'.format(cfg.DATASET.BOUNDARY, cfg.DATASET.SHUFFLE),
+
+    ids = sorted(list(set(subject_ids)))
+    partition = [ids[:cfg.DATASET.BOUNDARY], ids[cfg.DATASET.BOUNDARY:]]
+
+    ids_for_train, ids_for_val = partition
+    num_classes = len(ids_for_train)
+
+    train_dataset = CASIADataset(
+        [seqs_dir[i] for i, l in enumerate(subject_ids) if l in ids_for_train],
+        [subject_ids[i] for i, l in enumerate(subject_ids) if l in ids_for_train],
+        [status[i] for i, l in enumerate(subject_ids) if l in ids_for_train],
+        [views[i] for i, l in enumerate(subject_ids) if l in ids_for_train],
+        cfg.TRAIN.CACHE, train_transform
     )
 
-    if not os.path.exists(split_record_dir):
-        ids = sorted(list(set(subject_ids)))
-        if cfg.DATASET.SHUFFLE:
-            np.random.shuffle(ids)
-        partition = [ids[:cfg.DATASET.BOUNDARY], ids[cfg.DATASET.BOUNDARY:]]
-        np.save(split_record_dir, partition)
-
-    partition = np.load(split_record_dir)
-    ids_for_train, ids_for_test = partition
-    if phase == 'train':
-        ids_chosen = ids_for_train
-        use_cache = cfg.TRAIN.CACHE
-    else:
-        ids_chosen = ids_for_test
-        use_cache = cfg.TEST.CACHE
-
-    dataset = CASIADataset(
-        [seqs_dir[i] for i, l in enumerate(subject_ids) if l in ids_chosen],
-        [subject_ids[i] for i, l in enumerate(subject_ids) if l in ids_chosen],
-        [status[i] for i, l in enumerate(subject_ids) if l in ids_chosen],
-        [views[i] for i, l in enumerate(subject_ids) if l in ids_chosen],
-        use_cache, transform
+    val_dataset = CASIADataset(
+        [seqs_dir[i] for i, l in enumerate(subject_ids) if l in ids_for_val],
+        [subject_ids[i] for i, l in enumerate(subject_ids) if l in ids_for_val],
+        [status[i] for i, l in enumerate(subject_ids) if l in ids_for_val],
+        [views[i] for i, l in enumerate(subject_ids) if l in ids_for_val],
+        cfg.VAL.CACHE, val_transform
     )
-    return dataset
 
-def make_data_loader(cfg, phase):
-    assert phase in ('train', 'test')
-    transforms = build_transforms(cfg, phase)
-    dataset = build_dataset(cfg, phase, transforms)
-    cf = CollateFn(cfg, phase).gait_collate_fn
-    if phase == 'train':
-        loader = torch.utils.data.DataLoader(
-            dataset=dataset,
-            batch_sampler=GaitSampler(dataset, cfg.TRAIN.BATCH_SIZE),
-            collate_fn=cf,
-            num_workers=cfg.DATASET.NUM_WORKERS,
-        )
-    else:
-        loader = torch.utils.data.DataLoader(
-            dataset=dataset,
-            sampler=torch.utils.data.sampler.SequentialSampler(dataset),
-            batch_size=cfg.TEST.BATCH_SIZE,
-            num_workers=cfg.DATASET.NUM_WORKERS,
-            collate_fn=cf,
-        )
-    return loader
+    return train_dataset, val_dataset, num_classes
+
+def make_data_loader(cfg):
+    train_transform = build_transforms(cfg, is_train=True)
+    val_transform = build_transforms(cfg, is_train=False)
+
+    train_ds, val_ds, num_classes = build_dataset(cfg, train_transform, val_transform)
+
+    train_loader = torch.utils.data.DataLoader(
+        dataset=train_ds,
+        batch_sampler=RandomIdentitySampler(train_ds, cfg.TRAIN.BATCH_SIZE),
+        collate_fn=collate_fn_train(cfg.TRAIN.FRAME_NUM),
+        num_workers=cfg.DATASET.NUM_WORKERS,
+    )
+
+    val_loader = torch.utils.data.DataLoader(
+        dataset=val_ds,
+        sampler=SequentialSampler(val_ds),
+        collate_fn=collate_fn_val,
+        num_workers=cfg.DATASET.NUM_WORKERS,
+        batch_size=cfg.VAL.BATCH_SIZE,
+    )
+    return train_loader, val_loader, num_classes

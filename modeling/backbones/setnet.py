@@ -5,34 +5,22 @@ import numpy as np
 
 __all__ = ['SetNet']
 
-def clip(arr, tar):
-    len_ = len(arr)
-    for i in range(len(arr)):
-        if arr[-(i+1)] != tar:
-            break
-        else:
-            len_ -= 1
-    return arr[:len_]
-
 class ActivatedCNN(nn.Module):
-    def __init__(self, in_channels, out_channels, ks, activation, **kwargs):
+    def __init__(self, in_channels, out_channels, ks, **kwargs):
         super(ActivatedCNN, self).__init__()
         self.conv = nn.Conv2d(in_channels, out_channels, ks, **kwargs)
-        self.activation = getattr(F, activation)
 
     def forward(self, x):
         x = self.conv(x)
-        return self.activation(x, inplace=True)
+        return F.leaky_relu(x, inplace=True)
 
 class SetNet(nn.Module):
-    def __init__(self, cfg, nm_cls):
+    def __init__(self, num_ftrs, use_bnneck, num_classes):
         super(SetNet, self).__init__()
-        self.num_features = cfg.MODEL.NUM_FEATURES
-        self.activation = cfg.MODEL.ACTIVATION
+        self.num_features = num_ftrs
         self.batch_frame = None
-        self.use_bnneck = cfg.MODEL.BNNECK
+        self.use_bnneck = use_bnneck
         kwargs = dict(
-            activation = self.activation,
             bias = False
         )
         self.local_layer1 = ActivatedCNN(1, 32, 5, padding=2, **kwargs)
@@ -53,9 +41,11 @@ class SetNet(nn.Module):
             
 
         self.bin_num = [1, 2, 4, 8, 16]
-        self.fc1 = nn.Linear(128, 256)
+        self.fc1 = nn.Parameter(
+            nn.init.normal_(torch.zeros(sum(self.bin_num)*2, 128, self.num_features), std=0.001)
+        )
         self.fc2 = nn.Parameter(
-            nn.init.normal_(torch.zeros(sum(self.bin_num)*2, self.num_features, nm_cls), std=0.001)
+            nn.init.normal_(torch.zeros(sum(self.bin_num)*2, self.num_features, num_classes), std=0.001)
         )
 
         for m in self.modules():
@@ -67,9 +57,15 @@ class SetNet(nn.Module):
                 if m.affine:
                     nn.init.constant_(m.weight, 1.0)
                     nn.init.constant_(m.bias, 0.0)
-            elif isinstance(m, nn.Linear):
-                nn.init.kaiming_normal_(m.weight, a=0, mode='fan_out')
-                nn.init.constant_(m.bias, 0.0)
+
+    def _clip(self, arr, tar):
+        len_ = len(arr)
+        for i in range(len(arr)):
+            if arr[-(i+1)] != tar:
+                break
+            else:
+                len_ -= 1
+        return arr[:len_]
 
     def _max(self, x, n, m):
         _, c, h, w = x.size()
@@ -86,11 +82,13 @@ class SetNet(nn.Module):
     def forward(self, x, batch_frame=None):
         if batch_frame is not None:
             batch_frame = batch_frame[0].data.cpu().numpy().tolist()
-            batch_frame = clip(batch_frame, 0)
+            batch_frame = self._clip(batch_frame, 0)
             frame_sum = np.sum(batch_frame)
             if frame_sum < x.size(1):
                 x = x[:, :frame_sum, ...]
             self.batch_frame = [0] + np.cumsum(batch_frame).tolist()
+        else:
+            self.batch_frame = None
         x = x.unsqueeze(2) # added image channel
         n, m, c, h, w = x.size()
 
@@ -124,15 +122,22 @@ class SetNet(nn.Module):
             z = global_.view(n, c, bin_, -1)
             z = z.mean(3) + z.max(3)[0]
             feature.append(z)
-        
-        feature = torch.cat(feature, 2).permute(0, 2, 1)
-        feature = self.fc1(feature)
+    
+        feature = torch.cat(feature, 2).permute(2, 0, 1) # num of bins, batch size, num of channels
+        feature = feature.matmul(self.fc1)
+        feature = feature.permute(1, 0, 2) # 128 62 256
+
+        bs, num_bins, num_ftrs = feature.size()
 
         if self.use_bnneck:
-            bs, nm_cnns, ftrs = feature.size()
-            neck = self.bottleneck(feature.contiguous().view(-1, ftrs))
-            neck_for_cls = neck.view(bs, nm_cnns, ftrs)
-            neck = neck_for_cls.permute(1, 0, 2).matmul(self.fc2).permute(1, 0, 2)
-            return feature.contiguous(), neck.contiguous(), neck_for_cls.contiguous()
+            neck = self.bottleneck(feature.contiguous().view(-1, num_ftrs))
+            neck = neck.view(bs, num_bins, num_ftrs)
         else:
-            return feature.contiguous()
+            neck = feature
+        cls_score = neck.permute(1, 0, 2).matmul(self.fc2).permute(1, 0, 2)
+        return feature.contiguous(), neck.contiguous(), cls_score.contiguous()
+
+    def to_train(self):
+        self.train()
+        self.batch_frame = None
+

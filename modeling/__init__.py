@@ -1,5 +1,5 @@
-from .models import SetNet
+from .backbones import SetNet
 
-def build_model(cfg, nm_cls):
+def build_model(cfg, num_classes):
     if cfg.MODEL.NAME == 'SetNet':
-        return SetNet(cfg, nm_cls=nm_cls)
+        return SetNet(cfg.MODEL.NUM_FEATURES, cfg.MODEL.BNNECK, num_classes)

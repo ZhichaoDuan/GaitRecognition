@@ -11,3 +11,4 @@ data/transforms/__pycache__
 config/__pycache__
 nohup.out
 test_script.sh
+.DS_Store
