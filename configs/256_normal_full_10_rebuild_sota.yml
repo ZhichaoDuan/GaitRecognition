@@ -1,7 +1,0 @@
-PATH:
-  EXPERIMENT_DIR: rebuild_best_951_905_718
-MODEL:
-  FILE_MIDDLE: standard
-  BNNECK: True
-  N_SAVED: 10
-  DEVICE_ID: "('4, 5')"

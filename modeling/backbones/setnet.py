@@ -37,26 +37,27 @@ class SetNet(nn.Module):
         
         if self.use_bnneck:
             self.bottleneck = nn.BatchNorm1d(self.num_features)
-            self.bottleneck.bias.requires_grad_(False)
+            # self.bottleneck.bias.requires_grad_(False)
             
 
         self.bin_num = [1, 2, 4, 8, 16]
         self.fc1 = nn.Parameter(
-            nn.init.normal_(torch.zeros(sum(self.bin_num)*2, 128, self.num_features), std=0.001)
+            nn.init.xavier_uniform_(torch.zeros(sum(self.bin_num)*2, 128, self.num_features))
         )
         self.fc2 = nn.Parameter(
-            nn.init.normal_(torch.zeros(sum(self.bin_num)*2, self.num_features, num_classes), std=0.001)
+            nn.init.xavier_uniform_(torch.zeros(sum(self.bin_num)*2, self.num_features, num_classes))
         )
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, a=0, mode='fan_in')
-                if m.bias is not None:
-                    nn.init.constant_(m.bias, 0.0)
-            elif isinstance(m, nn.BatchNorm1d):
-                if m.affine:
-                    nn.init.constant_(m.weight, 1.0)
-                    nn.init.constant_(m.bias, 0.0)
+                # nn.init.kaiming_normal_(m.weight, a=0, mode='fan_in')
+                nn.init.xavier_uniform_(m.weight)
+                # if m.bias is not None:
+                    # nn.init.constant_(m.bias, 0.0)
+            # elif isinstance(m, nn.BatchNorm1d):
+            #     if m.affine:
+            #         nn.init.constant_(m.weight, 1.0)
+            #         nn.init.constant_(m.bias, 0.0)
 
     def _clip(self, arr, tar):
         len_ = len(arr)
@@ -69,7 +70,7 @@ class SetNet(nn.Module):
 
     def _max(self, x, n, m):
         _, c, h, w = x.size()
-        x = x.view(n, m, c, h, w)
+        x = x.reshape(n, m, c, h, w)
         if self.batch_frame is None:
             return torch.max(x, 1)[0]
         else: 
@@ -92,7 +93,7 @@ class SetNet(nn.Module):
         x = x.unsqueeze(2) # added image channel
         n, m, c, h, w = x.size()
 
-        x = self.local_layer1(x.view(-1, c, h, w))
+        x = self.local_layer1(x.reshape(-1, c, h, w))
         x = self.local_layer2(x)
         x = F.max_pool2d(x, 2)
 
@@ -116,10 +117,10 @@ class SetNet(nn.Module):
         feature = list()
         n, c, h, w = global_.size()
         for bin_ in self.bin_num:
-            z = x.view(n, c, bin_, -1)
+            z = x.reshape(n, c, bin_, -1)
             z = z.mean(3) + z.max(3)[0]
             feature.append(z)
-            z = global_.view(n, c, bin_, -1)
+            z = global_.reshape(n, c, bin_, -1)
             z = z.mean(3) + z.max(3)[0]
             feature.append(z)
     
@@ -130,14 +131,10 @@ class SetNet(nn.Module):
         bs, num_bins, num_ftrs = feature.size()
 
         if self.use_bnneck:
-            neck = self.bottleneck(feature.contiguous().view(-1, num_ftrs))
-            neck = neck.view(bs, num_bins, num_ftrs)
+            neck = self.bottleneck(feature.contiguous().reshape(-1, num_ftrs))
+            neck = neck.reshape(bs, num_bins, num_ftrs)
         else:
             neck = feature
         cls_score = neck.permute(1, 0, 2).matmul(self.fc2).permute(1, 0, 2)
         return feature.contiguous(), neck.contiguous(), cls_score.contiguous()
-
-    def to_train(self):
-        self.train()
-        self.batch_frame = None
 

@@ -1,8 +1,0 @@
-PATH:
-  EXPERIMENT_DIR: train_256_with_ce_full_1
-MODEL:
-  BNNECK: True
-  DEVICE_ID: "'4,5'"
-  CE_DIVIDED: 1
-TEST:
-  TEST_ITER: 50000

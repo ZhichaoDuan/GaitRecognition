@@ -3,36 +3,38 @@
 The architecture is mainly inspired by this [repo](https://github.com/L1aoXingyu/Deep-Learning-Project-Template) and I benefit a lot from this way of organizing code.
 
 ## Data 
-For now, my research mainly focus on `CASIA-B` dataset, which is available [here](http://www.cbsr.ia.ac.cn/english/Gait%20Databases.asp)
+For now, my research mainly focus on `CASIA-B` dataset, which is available [here](http://www.cbsr.ia.ac.cn/GaitDatasetB-silh.zip)
 
 
 ## Test Environment
 This repo works fine on a four NVIDIA 2080Ti machine. All the packages and their versions have been exported to [this file](environment.yml) using
 
 ```
-conda env export > ${ENV_FILE_NAME}.yml
+conda env export > environment.yml
 ```
 
 And you can recreate a exact the same environment by 
 
 ```
-conda env create -f ${ENV_FILE_NAME}.yml
+conda env create -f environment.yml
 ```
 
-## Results
-Record all the best results I got so far.
+## Data Processing
+In order to make this model work, we need to align the original data. After downloading CASIA-B dataset, you can use the following command to extract files
+```
+ls $FOLDER_NAME$ | xargs -n1 -I {} tar zxvf $FOLDER_NAME$/{} -C $TARGET_FOLDER$
+```
+I used the preprocessing script from this [repo](https://github.com/AbnerHqC/GaitSet). After extracted all the files, you can use the following command to align all the images.
+```
+python scripts/pretreatment.py --input_path '' --output_path '' --worker_num N
+```
 
-| Configuration | NM | BG | CL | Extra |
-| ------------- | --- | --- | --- | --- | 
-| <font color=blue>Reported</font> | <font color=blue>95.0</font> | <font color=blue>87.2</font> | <font color=blue>70.4</font> | |
-| <font color=red>Baseline with all the same config as the original paper</font> | <font color=red>95.509</font> | <font color=red>89.087</font> | <font color=red>71.318</font> | |
-|<font color=black>Baseline with ReLU activation</font>|<font color=black>95.373</font>|<font color=black>88.112</font>|<font color=black>70.045</font>|<font color=black></font>|
-|<font color=red> Baseline with ftr size changed to 512 </font>|<font color=red>95.036</font>|<font color=red>88.166</font>|<font color=red>71.245</font>| | 
-|<font color=black>Baseline with warmup and weight decay</font>|<font color=black>94.918</font>|<font color=black>86.429</font>|<font color=black>68.727</font>|<font color=black></font>|
-|<font color=green> Baseline + BNNeck + neck ftr + cosine dist </font>|<font color=green>96.164</font>|<font color=green>90.306</font>|<font color=green>66.564</font>|<font color=green>ce loss divided by 10, warm up and weight decay added, lr scheduler added, initialization remains unchanged, shift of BN is on, init of fc2 and conv2d is xavier_uniform</font>|
-|<font color=red>Baseline + BNNeck + neck ftr + cosine dist</font>|<font color=red>95.127</font>|<font color=red>90.498</font>|<font color=red>71.827</font>|<font color=red>ce loss divided by 10, no warm up and weight decay, no lr scheduler, used pure Adam, initialization changed, shift of BN is disabled, init of fc2 is normal with std 0.001, init of conv2d is kaiming_normal with a=0 and mode='fan_in', all bias of init module is 0.0, init weight of BN is 1.0</font>|
-
-<!-- |<font color=black></font>|<font color=black></font>|<font color=black></font>|<font color=black></font>|<font color=black></font>| -->
-
-## Issues
-* If you have no idea how to design your own `collate_fn`, maybe you can check out this [blog](https://www.jianshu.com/p/bb90bff9f6e5)
+## Start Training or Testing
+All the config files should be put under folder `configs`. A very simple training example is 
+```
+python tools/train.py --config_file configs/test.yml MODEL.DEVICE_ID "('3')" LOGGER.NAME TRAIN
+```
+If you want to test the model generated according to the previous config file, you can type in 
+```
+python tools/test.py --config_file configs/test.yml MODEL.DEVICE_ID "('3')" LOGGER.NAME TEST
+```

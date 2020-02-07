@@ -2,25 +2,26 @@ import os
 import argparse
 import torch
 import torch.nn as nn
+from torch.backends import cudnn
 import sys
 sys.path.append('.')
 
 from config import cfg
-from utils.logger import setup_logger
 from data import make_data_loader
+from utils import Models, setup_logger
 from engine.inference import do_test
+import logging
 
 def test(cfg):
-    os.environ['CUDA_VISIBLE_DEVICES'] = cfg.MODEL.DEVICE_ID
-    test_loader = make_data_loader(cfg, 'test')
-    f_structure = os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR, cfg.PATH.CHECKPOINT_DIR, 'structure.pt')
-    model_structure, _ = torch.load(f_structure)
-    model = model_structure.float().cuda()
-    f_weight = os.path.join(cfg.PATH.OUTPUT_DIR, cfg.PATH.EXPERIMENT_DIR, cfg.PATH.CHECKPOINT_DIR,'{}_{}.pt'.format(cfg.MODEL.NAME,cfg.TEST.TEST_ITER))
-    model_weight, _ = torch.load(f_weight)
-    model.load_state_dict(model_weight)
-    # model = model.module
-    do_test(model, cfg, test_loader)
+    # get data loader
+    _, val_loader, _ = make_data_loader(cfg)
+    # retrive model
+    models = Models(cfg)
+    logger = logging.getLogger(cfg.LOGGER.NAME)
+    logger.info('Testing starts.')
+    for model, name in models:
+        logger.info('====> Testing with model {} <===='.format(os.path.basename(name)))
+        do_test(model, cfg, val_loader)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -41,10 +42,10 @@ def main():
     logger = setup_logger(cfg)
     logger.info('Testing logger setup finished')
 
-    if args.config_file is not None:
-        logger.info('Merged settings from file %s', args.config_file)
+    if cfg.MODEL.DEVICE == 'cuda':
+        os.environ['CUDA_VISIBLE_DEVICES'] = cfg.MODEL.DEVICE_ID
+        cudnn.benchmark = True 
 
-    logger.info('Be advised we used model of iteration %d', cfg.TEST.TEST_ITER)
     test(cfg)
 
 if __name__ == "__main__":

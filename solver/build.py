@@ -13,3 +13,7 @@ def make_optimizer(cfg, model):
         params += [{"params": [v], "lr": lr, "weight_decay": weight_decay}]
     optimizer = getattr(optim, cfg.SOLVER.OPTIMIZER_NAME)(params)
     return optimizer
+
+def make_just_optimizer(cfg, model):
+    optimizer = getattr(optim, cfg.SOLVER.OPTIMIZER_NAME)(model.parameters(), lr=cfg.SOLVER.BASE_LR)
+    return optimizer

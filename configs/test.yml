@@ -1,8 +1,13 @@
 PATH:
-  EXPERIMENT_DIR: 'test_1'
+  EXPERIMENT_DIR: 'test'
 MODEL:
-  DEVICE_ID: "('3,4')"
   BNNECK: True
 TRAIN:
   CACHE: False
+  RECORD_STEP: 50
+  DISPLAY_INFO_STEP: 50
+  MAX_ITERS: 100
+  CLS_LOSS_TYPE: 'normal'
+  FRAME_NUM: 30
+
   

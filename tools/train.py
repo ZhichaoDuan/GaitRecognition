@@ -3,17 +3,18 @@ import argparse
 import sys
 sys.path.append('.')
 
+import torch
 from torch.backends import cudnn
 
 from config import cfg
 from utils.logger import setup_logger
 from data import make_data_loader
 from modeling import build_model
-from solver import make_optimizer, WarmupMultiStepLR
+from solver import make_optimizer, make_just_optimizer, WarmupMultiStepLR
 from layers import make_loss
 from engine.trainer import do_train
 
-def train(cfg):
+def train(cfg, rank):
     # data loader
     train_loader, val_loader, num_classes = make_data_loader(cfg)
     # setup model
@@ -33,6 +34,7 @@ def train(cfg):
     # call core function
     do_train(
         cfg,
+        rank,
         model,
         train_loader,
         val_loader,
@@ -46,6 +48,7 @@ def main():
     parser.add_argument(
         "--config_file", default=None, help="path to config file", type=str
     )
+    parser.add_argument('--local_rank', type=int, default=0)
     parser.add_argument("opts", help="Modify config options using the command-line", default=None,
                         nargs=argparse.REMAINDER)
 
@@ -76,7 +79,18 @@ def main():
     if cfg.MODEL.DEVICE == 'cuda':
         os.environ['CUDA_VISIBLE_DEVICES'] = cfg.MODEL.DEVICE_ID
         cudnn.benchmark = True
-    train(cfg)
+
+    world_sz = torch.cuda.device_count()
+    if world_sz > 1:
+        torch.distributed.init_process_group(
+            'nccl',
+            init_method='env://',
+            world_size=world_sz,
+            rank=args.local_rank,
+        )
+        torch.cuda.set_device(args.local_rank)
+
+    train(cfg, args.local_rank)
     
 if __name__ == "__main__":
     main()

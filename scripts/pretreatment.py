@@ -1,171 +1,195 @@
+# -*- coding: utf-8 -*-
+# @Author  : Abner
+# @Time    : 2018/12/19
+
 import os
-import scipy.misc
+from scipy import misc as scisc
 import cv2
-import warnings
-import time
-import argparse
-import concurrent.futures
-from terminaltables import AsciiTable
 import numpy as np
-import logging
+from warnings import warn
+from time import sleep
+import argparse
 
-opt = None
+from multiprocessing import Pool
+from multiprocessing import TimeoutError as MP_TimeoutError
 
-def crop_silhouette(im, position, im_file):
-    if opt.use_log:
-        logging.info('Size of image %s is (%d ,%d)', im_file, im.shape[0], im.shape[1])
-    if (im > 0).sum() < 100:
-        if opt.use_log:
-            logging.warning('Picture %s contains no more than 100 pixels, which has %d', im_file, (im > 0).sum())
+START = "START"
+FINISH = "FINISH"
+WARNING = "WARNING"
+FAIL = "FAIL"
+
+
+def boolean_string(s):
+    if s.upper() not in {'FALSE', 'TRUE'}:
+        raise ValueError('Not a valid boolean string')
+    return s.upper() == 'TRUE'
+
+
+parser = argparse.ArgumentParser(description='Test')
+parser.add_argument('--input_path', default='', type=str,
+                    help='Root path of raw dataset.')
+parser.add_argument('--output_path', default='', type=str,
+                    help='Root path for output.')
+parser.add_argument('--log_file', default='./pretreatment.log', type=str,
+                    help='Log file path. Default: ./pretreatment.log')
+parser.add_argument('--log', default=False, type=boolean_string,
+                    help='If set as True, all logs will be saved. '
+                         'Otherwise, only warnings and errors will be saved.'
+                         'Default: False')
+parser.add_argument('--worker_num', default=1, type=int,
+                    help='How many subprocesses to use for data pretreatment. '
+                         'Default: 1')
+opt = parser.parse_args()
+
+INPUT_PATH = opt.input_path
+OUTPUT_PATH = opt.output_path
+IF_LOG = opt.log
+LOG_PATH = opt.log_file
+WORKERS = opt.worker_num
+
+T_H = 64
+T_W = 64
+
+
+def log2str(pid, comment, logs):
+    str_log = ''
+    if type(logs) is str:
+        logs = [logs]
+    for log in logs:
+        str_log += "# JOB %d : --%s-- %s\n" % (
+            pid, comment, log)
+    return str_log
+
+
+def log_print(pid, comment, logs):
+    str_log = log2str(pid, comment, logs)
+    if comment in [WARNING, FAIL]:
+        with open(LOG_PATH, 'a') as log_f:
+            log_f.write(str_log)
+    if comment in [START, FINISH]:
+        if pid % 500 != 0:
+            return
+    print(str_log, end='')
+
+
+def cut_img(img, seq_info, frame_name, pid):
+    # A silhouette contains too little white pixels
+    # might be not valid for identification.
+    if img.sum() <= 10000:
+        message = 'seq:%s, frame:%s, no data, %d.' % (
+            '-'.join(seq_info), frame_name, img.sum())
+        warn(message)
+        log_print(pid, WARNING, message)
         return None
-    
-    top = (im.sum(axis = 1) != 0).argmax()
-    bottom = (im.sum(axis = 1) != 0).cumsum().argmax()
-
-    im = im[top:bottom + 1, :]
-    if opt.use_log:
-        logging.info('Image %s vertical clip is based on top %d, bottom %d', im_file, top, bottom)
-
-    w_h_ratio = im.shape[1] / im.shape[0]
-    if opt.use_log:
-        logging.info('Image %s w/h ratio is %f', im_file, w_h_ratio)
-    new_width = int(opt.height * w_h_ratio)
-    if opt.use_log:
-        logging.info('Image %s new width based on w/h ratio is %d', im_file, new_width)
-    im = cv2.resize(im, (new_width, opt.height), interpolation=cv2.INTER_CUBIC)
-    
-    _ = np.zeros((im.shape[0], int(opt.width / 2)))
-    im = np.concatenate([_, im, _], axis=1)
-    
-    pixel_sum = im.sum()
-    horizontal_pixel_sum = im.sum(axis=0).cumsum()
-
-    horizontal_center = None
-    for i in range(len(horizontal_pixel_sum)):
-        if horizontal_pixel_sum[i] > pixel_sum / 2:
-            horizontal_center = i
+    # Get the top and bottom point
+    y = img.sum(axis=1)
+    y_top = (y != 0).argmax(axis=0)
+    y_btm = (y != 0).cumsum(axis=0).argmax(axis=0)
+    img = img[y_top:y_btm + 1, :]
+    # As the height of a person is larger than the width,
+    # use the height to calculate resize ratio.
+    _r = img.shape[1] / img.shape[0]
+    _t_w = int(T_H * _r)
+    img = cv2.resize(img, (_t_w, T_H), interpolation=cv2.INTER_CUBIC)
+    # Get the median of x axis and regard it as the x center of the person.
+    sum_point = img.sum()
+    sum_column = img.sum(axis=0).cumsum()
+    x_center = -1
+    for i in range(sum_column.size):
+        if sum_column[i] > sum_point / 2:
+            x_center = i
             break
-    if opt.use_log:
-        logging.info(
-            "Image %s ' pixel sum is %d, horizontal_center is %d", 
-            im_file, 
-            pixel_sum, 
-            horizontal_center)
-
-    if horizontal_center is None:
-        if opt.use_log:
-            logging.critical('Impossible situation, input image %s has no center', im_file)
-        raise None
-    left_border = horizontal_center - int(opt.width / 2)
-    right_border = horizontal_center + int(opt.width / 2)
-
-    if opt.use_log:
-        logging.info("Image %s ' left_border is %d, right_border is %d", im_file, left_border, right_border)
-    
-    im = im[:, left_border:right_border]
-    return im.astype('uint8')
+    if x_center < 0:
+        message = 'seq:%s, frame:%s, no center.' % (
+            '-'.join(seq_info), frame_name)
+        warn(message)
+        log_print(pid, WARNING, message)
+        return None
+    h_T_W = int(T_W / 2)
+    left = x_center - h_T_W
+    right = x_center + h_T_W
+    if left <= 0 or right >= img.shape[1]:
+        left += h_T_W
+        right += h_T_W
+        _ = np.zeros((img.shape[0], h_T_W))
+        img = np.concatenate([_, img, _], axis=1)
+    img = img[:, left:right]
+    return img.astype('uint8')
 
 
-def process(position):
-    folder = os.path.join(opt.input_path, position)
-    target_dir = os.path.join(opt.output_path, position)
+def cut_pickle(seq_info, pid):
+    seq_name = '-'.join(seq_info)
+    log_print(pid, START, seq_name)
+    seq_path = os.path.join(INPUT_PATH, *seq_info)
+    out_dir = os.path.join(OUTPUT_PATH, *seq_info)
+    frame_list = os.listdir(seq_path)
+    frame_list.sort()
+    count_frame = 0
+    for _frame_name in frame_list:
+        frame_path = os.path.join(seq_path, _frame_name)
+        img = cv2.imread(frame_path)[:, :, 0]
+        img = cut_img(img, seq_info, _frame_name, pid)
+        if img is not None:
+            # Save the cut img
+            save_path = os.path.join(out_dir, _frame_name)
+            scisc.imsave(save_path, img)
+            count_frame += 1
+    # Warn if the sequence contains less than 5 frames
+    if count_frame < 5:
+        message = 'seq:%s, less than 5 valid data.' % (
+            '-'.join(seq_info))
+        warn(message)
+        log_print(pid, WARNING, message)
 
-    seqs = os.listdir(folder)
-    seqs.sort()
-
-    if opt.use_log:
-        logging.info('Counted %d pictures in folder %s', len(seqs), folder)
-
-    frame_count = 0
-    for im_file in seqs:
-        im_dir = os.path.join(folder, im_file)
-        im = cv2.imread(im_dir, cv2.IMREAD_GRAYSCALE)
-        im = crop_silhouette(im, position, im_file)
-
-        if im is not None:
-            target_im_dir = os.path.join(opt.output_path, position, im_file)
-            scipy.misc.imsave(target_im_dir, im)
-            frame_count += 1
-        else:
-            if opt.use_log:
-                logging.warning('Image %s is None after crop', im_file)
-
-    if frame_count < 5 and opt.use_log:
-        logging.warning('Position %s contains less than 5 valid frames.', position)
-    
-    return position
+    log_print(pid, FINISH,
+              'Contain %d valid frames. Saved to %s.'
+              % (count_frame, out_dir))
 
 
-def main():
-    start = time.time()
-    global opt
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--input_path', type=str, default='')
-    parser.add_argument('--output_path', type=str, default='')
-    parser.add_argument('--log_dir', type=str, default='./pretreatment.log')
-    parser.add_argument('--use_log', action='store_true', default=False)
-    parser.add_argument('--worker_num', default=4, type=int)
-    parser.add_argument('--height', default=64, type=int)
-    parser.add_argument('--width', default=64, type=int)
-    opt = parser.parse_args()
+pool = Pool(WORKERS)
+results = list()
+pid = 0
 
-    if opt.use_log:
-        logging.basicConfig(format='%(asctime)s::%(levelname)s::%(message)s', level=logging.DEBUG, filename=opt.log_dir)
-        logging.info('logging system configured!')
+print('Pretreatment Start.\n'
+      'Input path: %s\n'
+      'Output path: %s\n'
+      'Log file: %s\n'
+      'Worker num: %d' % (
+          INPUT_PATH, OUTPUT_PATH, LOG_PATH, WORKERS))
 
-    settings = []
-    settings.append(['param', 'value'])
-    settings.append(['input_path', opt.input_path])
-    settings.append(['output_path', opt.output_path])
-    settings.append(['log_dir', opt.log_dir])
-    settings.append(['use_log', opt.use_log])
-    settings.append(['worker_num', opt.worker_num])
-    settings.append(['height', opt.height])
-    settings.append(['width', opt.width])
+id_list = os.listdir(INPUT_PATH)
+id_list.sort()
+# Walk the input path
+for _id in id_list:
+    seq_type = os.listdir(os.path.join(INPUT_PATH, _id))
+    seq_type.sort()
+    for _seq_type in seq_type:
+        view = os.listdir(os.path.join(INPUT_PATH, _id, _seq_type))
+        view.sort()
+        for _view in view:
+            seq_info = [_id, _seq_type, _view]
+            out_dir = os.path.join(OUTPUT_PATH, *seq_info)
+            os.makedirs(out_dir)
+            results.append(
+                pool.apply_async(
+                    cut_pickle,
+                    args=(seq_info, pid)))
+            sleep(0.02)
+            pid += 1
 
-    table = AsciiTable(settings)
-    print(table.table)
-
-    if opt.use_log:
-        for i in range(1, len(settings)):
-            logging.info('Param %s was set to %s', settings[i][0], settings[i][1])
-
-    subjects = os.listdir(opt.input_path)
-    subjects.sort()
-
-    results = list()
-
-    with concurrent.futures.ThreadPoolExecutor(max_workers=opt.worker_num) as executor:
-        for _subject in subjects:
-            _subject_dir = os.path.join(opt.input_path, _subject)
-            status = os.listdir(_subject_dir)
-            status.sort()
-
-            for _status in status:
-                _status_dir = os.path.join(_subject_dir, _status)
-                views = os.listdir(_status_dir)
-                views.sort()
-                for _view in views:
-                    _view_dir = os.path.join(_status_dir, _view)
-                    processed_view_dir = os.path.join(opt.output_path, _subject, _status, _view)
-                    os.makedirs(processed_view_dir)
-                    if opt.use_log:
-                        logging.info('%s folder is created.', processed_view_dir)
-                    results.append(executor.submit(process, os.path.join(_subject, _status, _view)))
-
-        for future in concurrent.futures.as_completed(results):
-            if opt.use_log:
-                try:
-                    pos = future.result()
-                    logging.info('Position %s process completed.', pos)
-                except Exception as exc:
-                    logging.error('generated an exception: %s', exc)
+pool.close()
+unfinish = 1
+while unfinish > 0:
+    unfinish = 0
+    for i, res in enumerate(results):
+        try:
+            res.get(timeout=0.1)
+        except Exception as e:
+            if type(e) == MP_TimeoutError:
+                unfinish += 1
+                continue
             else:
-                pass
-
-    end = time.time()
-    if opt.use_log:
-        logging.info('Pictures preprocessing finished, took %d mins, %d secs', int(end - start) // 60, int(end - start) % 60)
-
-if __name__ == "__main__":
-    main()
+                print('\n\n\nERROR OCCUR: PID ##%d##, ERRORTYPE: %s\n\n\n',
+                      i, type(e))
+                raise e
+pool.join()
